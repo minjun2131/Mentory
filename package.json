@@ -10,6 +10,8 @@
     "genTypes": "supabase gen types typescript --project-id baclhxsaaveunollpgxj --schema public > src/types/supabase.ts"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.5.2",
+    "@supabase/supabase-js": "^2.47.10",
     "@tanstack/react-query": "^5.62.8",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
