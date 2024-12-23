@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "genTypes": "supabase gen types typescript --project-id baclhxsaaveunollpgxj --schema public > src/types/supabase.ts"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.62.8",
