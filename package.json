@@ -1,39 +1,40 @@
 {
-  "name": "mentory",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "genTypes": "supabase gen types typescript --project-id baclhxsaaveunollpgxj --schema public > src/types/supabase.ts"
-  },
-  "dependencies": {
-    "@supabase/ssr": "^0.5.2",
-    "@supabase/supabase-js": "^2.47.10",
-    "@tanstack/react-query": "^5.62.8",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "lucide-react": "^0.469.0",
-    "next": "14.2.20",
-    "prettier": "^3.4.2",
-    "react": "^18",
-    "react-dom": "^18",
-    "react-hook-form": "^7.54.2",
-    "supabase": "^2.1.1",
-    "tailwind-merge": "^2.5.5",
-    "tailwindcss-animate": "^1.0.7",
-    "zustand": "^5.0.2"
-  },
-  "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.20",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "name": "mentory",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+      "dev": "next dev",
+      "build": "next build",
+      "start": "next start",
+      "lint": "next lint",
+      "genTypes": "supabase gen types typescript --project-id baclhxsaaveunollpgxj --schema public > src/types/supabase.ts"
+    },
+    "dependencies": {
+      "@supabase/ssr": "^0.5.2",
+      "@supabase/supabase-js": "^2.47.10",
+      "@tanstack/react-query": "^5.62.8",
+      "class-variance-authority": "^0.7.1",
+      "clsx": "^2.1.1",
+      "lucide-react": "^0.469.0",
+      "next": "14.2.20",
+      "prettier": "^3.4.2",
+      "react": "^18",
+      "react-dom": "^18",
+      "react-hook-form": "^7.54.2",
+      "supabase": "^2.1.1",
+      "tailwind-merge": "^2.5.5",
+      "tailwindcss-animate": "^1.0.7",
+      "zustand": "^5.0.2"
+    },
+    "devDependencies": {
+      "@types/node": "^20",
+      "@types/react": "^18",
+      "@types/react-dom": "^18",
+      "eslint": "^8",
+      "eslint-config-next": "14.2.20",
+      "postcss": "^8",
+      "tailwindcss": "^3.4.1",
+      "typescript": "^5"
+    }
   }
-}
+  
