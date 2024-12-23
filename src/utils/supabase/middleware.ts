@@ -11,13 +11,19 @@ export async function updateSession(request: NextRequest) {
         getAll: () => request.cookies.getAll(),
         setAll: (cookiesToSet) =>
           cookiesToSet.forEach(({ name, value, options }) =>
-            request.cookies.set(name, value, options)
+            request.cookies.set({
+              name, 
+              value,
+              ...options, 
+            })
           ),
       },
     }
   );
 
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data } = await supabase.auth.getUser();
+  const user = data?.user;
+  console.log(user);
 
   // // 로그인 필요 페이지에 접근 시 비로그인 상태라면 /login으로 리다이렉트
   // if (!user && !request.nextUrl.pathname.startsWith("/login")) {
