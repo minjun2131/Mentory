@@ -21,7 +21,7 @@ const Header = () => {
     <header className="sticky top-0 flex justify-between items-center bg-white p-4 shadow">
       <div className="flex items-center">
         <Link href="/">
-          <Image src="/images/logo.png" alt="Mentory Logo" width={150} height={40} className="mr-4 cursor-pointer" />
+          <Image src="/images/logo.png" alt="Mentory_Logo" width={150} height={40} className="mr-4 cursor-pointer" />
         </Link>
       </div>
       <div className="flex items-center space-x-4">
@@ -30,7 +30,7 @@ const Header = () => {
             src={profileImage || '/images/profile.png'}
             width={40}
             height={40}
-            alt="profile image"
+            alt="profile_image"
             className="w-10 h-10 rounded-full"
           />
         ) : (

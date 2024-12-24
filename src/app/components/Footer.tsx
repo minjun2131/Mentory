@@ -20,7 +20,7 @@ const Footer = () => {
             <div>
               <Image
                 src="/images/logo.png"
-                alt="Mentory Logo"
+                alt="Mentory_Logo"
                 width={150}
                 height={40}
                 className="mr-4 cursor-pointer grayscale"
