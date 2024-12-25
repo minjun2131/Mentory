@@ -1,3 +1,5 @@
+"use client"
+
 import React from 'react';
 import ModalWrapper from './ModalWrapper';
 import { useModalStore } from '@/app/store/modalStore';
