@@ -3,14 +3,21 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { useModalStore } from '@/app/store/modalStore';
+import { logIn } from '@/utils/supabase/auth';
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { open } = useModalStore();
+  const { open,close } = useModalStore();
 
-  const handleLogin = () => {
-    console.log('로그인이 되는가!!!!');
+  const handleLogin = async() => {
+    // console.log('로그인이 되는가!!!!');
+try{
+await logIn(email,password)
+close()
+} catch (error:any) {
+  alert(`로그인에 실패했습니다.${error.message}`)
+}
   };
 
   return (

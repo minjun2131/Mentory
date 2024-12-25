@@ -3,14 +3,27 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { useModalStore } from '@/app/store/modalStore';
+import { signUp } from '@/utils/supabase/auth';
 
 const SignupForm: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmePassword, setConfirmPassword] = useState('');
+  const [name, setName] = useState('');
   const { open } = useModalStore();
 
-  const handleSignup = () => {
-    console.log('회원가입이 되는가!!!!');
+  const handleSignup = async () => {
+    if (password !== confirmePassword) {
+      alert('비밀번호가 일치하지 않습니다!');
+      return;
+    }
+    // console.log('회원가입이 되는가!!!!');
+    try {
+      await signUp(email, password, name);
+      open('login');
+    } catch (error: any) {
+      alert(`회원가입에 실패했습니다.${error.message}`);
+    }
   };
 
   return (
@@ -44,8 +57,8 @@ const SignupForm: React.FC = () => {
         <input
           type="name"
           placeholder="이름"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           className="border p-2 w-full rounded mb-4 bg-gray-200 placeholder-black"
         />
         <button
