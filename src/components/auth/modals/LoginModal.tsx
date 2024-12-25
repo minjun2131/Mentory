@@ -1,9 +1,9 @@
 "use client"
 
 import React from 'react';
-import ModalWrapper from './ModalWrapper';
+import ModalWrapper from '../../ui/ModalWrapper';
 import { useModalStore } from '@/app/store/modalStore';
-import LoginForm from '@/app/auth/login/LoginForm';
+import LoginForm from '@/components/auth/forms/LoginForm';
 
 const LoginModal: React.FC = () => {
   const { openModal, close } = useModalStore();
