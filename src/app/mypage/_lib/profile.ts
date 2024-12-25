@@ -17,8 +17,8 @@ export const getUserProfile = async () => {
         const {data:userProfile,error:userProfileError} = await supabase
         .from('users')
         .select("*")
-        .eq("id",user.id)
-        .single();
+        .eq("id", user.id);
+        // 가져오고 싶은데이터가 여러개인데 single() 을 사용해서 생긴 오류
     
         if (userProfileError) {
             throw new Error (
@@ -30,11 +30,12 @@ export const getUserProfile = async () => {
 
     catch (error) {
         console.log(error);
+        return null;
     } 
 };
 
 
-export const updateUserProfileImage = async (file: File) => {
+export const updateUserProfileImage = async (file: File):Promise<string | undefined>=> {
     try {
         const user = await getAuthenticatedUser();
 
