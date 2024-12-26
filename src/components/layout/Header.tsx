@@ -1,14 +1,44 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useModalStore } from '@/store/modalStore';
-import { authStore } from '@/store/authStore';
+import { createClient } from '@/utils/supabase/client';
 
 const Header = () => {
-  const { isLoggedIn, profileImage } = authStore();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
   const { open } = useModalStore();
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      const supabase = createClient();
+      const {
+        data: { user }
+      } = await supabase.auth.getUser();
+
+      if (user) {
+        setIsLoggedIn(true);
+
+        const { data: profileData, error } = await supabase
+          .from('users')
+          .select('profile_image')
+          .eq('id', user.id)
+          .single();
+
+          if (!error) {
+            setProfileImage(profileData?.profile_image || null)
+          }
+      } else {
+        setIsLoggedIn(false)
+      }
+    };
+
+    fetchUserProfile()
+  },[]
+
+);
 
   return (
     <header className="sticky top-0 flex justify-between items-center bg-white p-4 shadow">

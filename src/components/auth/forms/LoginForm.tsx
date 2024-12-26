@@ -3,20 +3,23 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { useModalStore } from '@/store/modalStore';
-import { logIn } from '@/utils/supabase/auth';
+import { createClient } from '@/utils/supabase/client';
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
   const { open, close } = useModalStore();
 
   const handleLogin = async () => {
     // console.log('로그인이 되는가!!!!');
+    const supabase = createClient();
     try {
-      await logIn(email, password);
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw new Error(error.message);
       close();
     } catch (error: any) {
-      alert(`로그인에 실패했습니다.${error.message}`);
+      setError(error.message);
     }
   };
 
@@ -27,6 +30,7 @@ const LoginForm: React.FC = () => {
       </div>
       <div>
         <h2 className="text-2xl font-bold text-center mb-4">로그인</h2>
+        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
         <input
           type="email"
           placeholder="아이디"
