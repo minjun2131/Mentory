@@ -1,21 +1,14 @@
 'use client';
 
-import Link from 'next/link';
+import React from 'react';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { useModalStore } from '@/store/modalStore';
+import { authStore } from '@/store/authStore';
 
 const Header = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [profileImage, setProfileImage] = useState<string | null>(null);
-
-  useEffect(() => {
-    const user = {
-      loggedIn: true,
-      profileImage: ''
-    };
-    setIsLoggedIn(user.loggedIn);
-    setProfileImage(user.profileImage);
-  }, []);
+  const { isLoggedIn, profileImage } = authStore();
+  const { open } = useModalStore();
 
   return (
     <header className="sticky top-0 flex justify-between items-center bg-white p-4 shadow">
@@ -35,19 +28,19 @@ const Header = () => {
           />
         ) : (
           <>
-            <Link
-              href="/login"
+            <button
+              onClick={() => open('login')}
               className="bg-white text-black px-4 py-2 rounded hover:bg-black hover:text-white transition duration-300"
             >
               Log In
-            </Link>
+            </button>
 
-            <Link
-              href="/signup"
+            <button
+              onClick={() => open('signup')}
               className="bg-black text-white px-4 py-2 rounded hover:bg-white hover:text-black transition duration-300"
             >
               Sign Up
-            </Link>
+            </button>
           </>
         )}
       </div>
