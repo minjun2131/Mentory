@@ -1,5 +1,5 @@
 import { createClient } from './client';
-import { authStore, fetchUserProfile } from '@/store/authStore';
+import { authStore } from '@/store/authStore';
 
 export async function signUp(email: string, password: string, name: string) {
   const supabase = createClient();
@@ -27,9 +27,10 @@ export async function logIn(email: string, password: string) {
     throw new Error(error.message);
   }
 
-  const authData = await fetchUserProfile();
-  if (authData) {
-    authStore.getState().setAuthState(authData);
+  try {
+    await authStore.getState().fetchUserProfile();
+  } catch (fetchError) {
+    console.error('로그인 후 프로필 가져오기 실패:', fetchError);
   }
 
   return data;
@@ -42,4 +43,8 @@ export async function logOut() {
   if (error) {
     throw new Error(error.message);
   }
+
+  //초기화
+  authStore.getState().clearAuthState();
+
 }
