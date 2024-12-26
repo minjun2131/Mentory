@@ -5,7 +5,7 @@ import Header from '@/components/layout/Header';
 import LoginModal from '@/components/auth/modals/LoginModal';
 import SignupModal from '@/components/auth/modals/SignupModal';
 import Footer from '@/components/layout/Footer';
-
+import Providers from '@/components/providers/RQProvider';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -32,10 +32,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Header />
-          <LoginModal />
-          <SignupModal />
-        <main>
-          {children}</main>
+
+        <Providers>
+          <main>{children}</main>
+        </Providers>
+        <LoginModal />
+        <SignupModal />
         <Footer />
       </body>
     </html>
