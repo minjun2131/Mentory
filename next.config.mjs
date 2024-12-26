@@ -1,6 +1,10 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = { images: {
-    domains: ['baclhxsaaveunollpgxj.supabase.co'], // Supabase 도메인 추가함함
-  },};
+
+const nextConfig = {
+  reactStrictMode: true,
+  images: {
+    domains: ['baclhxsaaveunollpgxj.supabase.co']
+  }
+};
 
 export default nextConfig;
