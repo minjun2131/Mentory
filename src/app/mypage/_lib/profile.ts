@@ -14,10 +14,10 @@ const getAuthenticatedUser = async () => {
 export const getUserProfile = async () => {
     try {
         const user = await getAuthenticatedUser();
-        const {data:userProfile,error:userProfileError} = await supabase
-        .from('users')
-        .select("*")
-        .eq("id", user.id);
+        const { data: userProfile, error: userProfileError } = await supabase
+          .from('users')
+          .select('*')
+          .eq('id', user.id);
         // 가져오고 싶은데이터가 여러개인데 single() 을 사용해서 생긴 오류
     
         if (userProfileError) {
