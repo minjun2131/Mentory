@@ -12,7 +12,7 @@ const SignupForm: React.FC = () => {
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [passwordMatch, setPasswordMatch] = useState<boolean | null>(null);
   const [name, setName] = useState('');
-  const [error,setError] = useState<string|null>(null)
+  const [error, setError] = useState<string | null>(null);
   const { open } = useModalStore();
 
   useEffect(() => {
@@ -30,20 +30,19 @@ const SignupForm: React.FC = () => {
       return; //이러면 이제 에러있으면 진행이 안되겠지....?아마....?
     }
 
-    const supabase = createClient()
+    const supabase = createClient();
     try {
-      const {data,error} = await supabase.auth.signUp({email,password});
-      if (error) throw new Error(error.message) 
+      const { data, error } = await supabase.auth.signUp({ email, password });
+      if (error) throw new Error(error.message);
 
-        const userId = data.user?.id
+      const userId = data.user?.id;
 
-        if(userId) {
-          const {error:userError} = await supabase.from('users').insert([{id:userId, name}])
-          if (userError) throw new Error(userError.message)
-        }
-      alert('회원가입에 성공했습니다.')
+      if (userId) {
+        const { error: userError } = await supabase.from('users').insert([{ id: userId, name }]);
+        if (userError) throw new Error(userError.message);
+      }
+      alert('회원가입에 성공했습니다.');
       open('login');
-
     } catch (error: any) {
       setError(error.message);
     }
