@@ -38,7 +38,6 @@ export default function RootLayout({
         </Providers>
         <LoginModal />
         <SignupModal />
-        <main>{children}</main>
         <Footer />
       </body>
     </html>
