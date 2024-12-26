@@ -35,33 +35,44 @@ export const getUserProfile = async () => {
 };
 
 
-export const updateUserProfileImage = async (file: File):Promise<string | undefined>=> {
+export const updateUserProfileImage = async ({
+    file,
+    name,
+  }: {
+    file: File | null;
+    name: string;
+  }): Promise<string | undefined> => {
     try {
         const user = await getAuthenticatedUser();
 
         // 버킷 폴더 생성 및 이미지 URL 생성
         const userId = user.id;
-        const folderPath = `profile-images/${userId}`;
-        const fileName = `profile-${Date.now()}.jpg`;
-        const filePath = `${folderPath}/${fileName}`;
 
-        const {error:uploadError} = await supabase.storage
-        .from('profile')
-        .upload(filePath,file,{
-            contentType:file.type,
-            upsert:true,
-        });
+        let publicUrl: string | undefined = undefined;
+        console.log(file);
+        if (file) {
+            const folderPath = `profile-images/${userId}`;
+            const fileName = `profile-${Date.now()}.jpg`;
+            const filePath = `${folderPath}/${fileName}`;
+            
+            console.log(file.type)
 
-        if (uploadError) {
-            throw new Error(`이미지 업로드 실패: ${uploadError.message}`);
+            const {error:uploadError} = await supabase.storage
+            .from('profile')
+            .upload(filePath,file,{
+                contentType:file.type,
+                upsert:true,
+            });
+
+            if (uploadError) {
+                throw new Error(`이미지 업로드 실패: ${uploadError.message}`);
+            }
+
+            const {data: publicUrlData} = supabase.storage.from('profile').getPublicUrl(filePath);
+            publicUrl = publicUrlData.publicUrl;
         }
-
-        const {data: publicUrlData} = supabase.storage.from('profile').getPublicUrl(filePath);
-
-        const publicUrl = publicUrlData.publicUrl;
-
         const {error:updateError} = await supabase.from('users')
-        .update({profile_image:publicUrl})
+        .update({profile_image:publicUrl,name})
         .eq('id',userId);
 
         if (updateError) {

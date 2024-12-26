@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { loginAsDummyUser } from './_lib/dummy';
 import { useUserProfile } from './_hooks/useUserProfile';
 import Link from 'next/link';
+import Image from 'next/image';
+import ProfileImage from './_components/ProfileImage';
 
 const MyPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -42,9 +44,7 @@ const MyPage = () => {
     <div className="flex flex-col items-center justify-center min-h-screen bg-white">
       {/* 프로필 아이콘 */}
       <div className="flex flex-col items-center mb-6">
-        <div className="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center">
-          <span className="text-4xl text-gray-500">👤</span>
-        </div>
+        <ProfileImage user={user} />
         <h1 className="mt-4 text-xl font-semibold text-gray-800">{user.name}</h1>
       </div>
 
