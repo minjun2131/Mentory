@@ -8,9 +8,17 @@ import Footer from '@/components/layout/Footer';
 import Providers from '@/components/providers/RQProvider';
 
 const seoulHangang = localFont({
-  src: './fonts/SeoulHangangM.woff',
-  variable: '--font-seoul-hangang',
-  weight: '400 700'
+  src: [
+    {
+      path: './fonts/SeoulHangangM.woff',
+      weight: '400'
+    },
+    {
+      path: './fonts/SeoulHangangB.woff',
+      weight: '700'
+    }
+  ],
+  variable: '--font-seoul-hangang'
 });
 
 export const metadata: Metadata = {

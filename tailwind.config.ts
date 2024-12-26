@@ -9,6 +9,16 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        seoulHangang: ['SeoulHangang', 'sans-serif'],
+      },// 서울한강체 추가
+      fontWeight: {
+        light: '300',
+        normal: '400',
+        semibold: '600',
+        bold: '700',
+        extrabold: '800',
+      },
       colors: {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
