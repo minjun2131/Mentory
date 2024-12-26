@@ -1,29 +1,13 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { loginAsDummyUser } from './_lib/dummy';
 import { useUserProfile } from './_hooks/useUserProfile';
 import Link from 'next/link';
-import Image from 'next/image';
 import ProfileImage from './_components/ProfileImage';
 
 const MyPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(() => {
-    const login = async () => {
-      try {
-        // 더미 계정으로 로그인 시도
-        await loginAsDummyUser();
-        setIsLoggedIn(true); // 로그인 성공 시 상태 업데이트
-      } catch (error) {
-        console.log('로그인 실패: ' + (error as Error).message);
-      }
-    };
-
-    // 페이지가 렌더링될 때 로그인 시도
-    login();
-  }, []);
   const { data, isPending, isError } = useUserProfile(isLoggedIn);
 
   if (isPending) {

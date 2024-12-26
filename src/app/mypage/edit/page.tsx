@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUpdateProfileImage } from '../_hooks/useUpdateProfileImage';
 import { useUserProfile } from '../_hooks/useUserProfile';
-import { loginAsDummyUser } from '../_lib/dummy';
 
 const EditProfileModal = () => {
   const router = useRouter();
@@ -18,7 +17,6 @@ const EditProfileModal = () => {
     const login = async () => {
       try {
         // 더미 계정으로 로그인 시도
-        await loginAsDummyUser();
         setIsLoggedIn(true); // 로그인 성공 시 상태 업데이트
       } catch (error) {
         console.log('로그인 실패: ' + (error as Error).message);
@@ -126,10 +124,10 @@ const EditProfileModal = () => {
             </button>
             <button
               onClick={handleSave}
-              disabled={profileUpdate.isLoading}
+              disabled={profileUpdate.isPending}
               className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
             >
-              {profileUpdate.isLoading ? '저장 중...' : '저장하기'}
+              {profileUpdate.isPending ? '저장 중...' : '저장하기'}
             </button>
           </div>
         </div>

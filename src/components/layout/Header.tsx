@@ -1,21 +1,44 @@
 'use client';
 
-import Link from 'next/link';
-import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useModalStore } from '@/store/modalStore';
+import { createClient } from '@/utils/supabase/client';
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [profileImage, setProfileImage] = useState<string | null>(null);
+  const { open } = useModalStore();
 
   useEffect(() => {
-    const user = {
-      loggedIn: true,
-      profileImage: ''
+    const fetchUserProfile = async () => {
+      const supabase = createClient();
+      const {
+        data: { user }
+      } = await supabase.auth.getUser();
+
+      if (user) {
+        setIsLoggedIn(true);
+
+        const { data: profileData, error } = await supabase
+          .from('users')
+          .select('profile_image')
+          .eq('id', user.id)
+          .single();
+
+          if (!error) {
+            setProfileImage(profileData?.profile_image || null)
+          }
+      } else {
+        setIsLoggedIn(false)
+      }
     };
-    setIsLoggedIn(user.loggedIn);
-    setProfileImage(user.profileImage);
-  }, []);
+
+    fetchUserProfile()
+  },[]
+
+);
 
   return (
     <header className="sticky top-0 flex justify-between items-center bg-white p-4 shadow">
@@ -35,19 +58,19 @@ const Header = () => {
           />
         ) : (
           <>
-            <Link
-              href="/login"
+            <button
+              onClick={() => open('login')}
               className="bg-white text-black px-4 py-2 rounded hover:bg-black hover:text-white transition duration-300"
             >
               Log In
-            </Link>
+            </button>
 
-            <Link
-              href="/signup"
+            <button
+              onClick={() => open('signup')}
               className="bg-black text-white px-4 py-2 rounded hover:bg-white hover:text-black transition duration-300"
             >
               Sign Up
-            </Link>
+            </button>
           </>
         )}
       </div>
