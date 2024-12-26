@@ -1,42 +1,38 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Dialog } from '../ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import ChatList from './ChatList';
 import ChatRoom from './ChatRoom';
+import useModalStore from '@/store/chatModalStore';
 
 const ChatModal = () => {
-  // modal 정말 ui만 있어요.. 혜진님 도와주세요
-  const [isOpen, setIsOpen] = useState(false);
+  const { isOpen, openModal, closeModal } = useModalStore();
   const [activeTab, setActiveTab] = useState<'list' | 'room'>('list');
-
   const [activeChatroomId, setActiveChatroomId] = useState<string | null>(null);
-
-  const toggleModal = () => setIsOpen(!isOpen);
-  const switchTab = (tab: 'list' | 'room') => setActiveTab(tab);
 
   return (
     <>
       {/* 플로팅 채팅 버튼 */}
       <button
         className="fixed bottom-5 right-5 p-4 bg-blue-600 text-white rounded-full shadow-lg focus:outline-none"
-        onClick={toggleModal}
+        onClick={openModal} // 모달 열기
       >
         💬
       </button>
 
       {/* 채팅 모달 */}
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        {/* 배경 오버레이 */}
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={toggleModal} />
-        {/* 모달 content */}
-        <div className="fixed inset-0 bg-white z-50 flex flex-col h-full md:rounded-lg md:h-auto md:max-w-lg md:mx-auto">
+      <Dialog open={isOpen} onOpenChange={(open) => (open ? openModal() : closeModal())}>
+        <DialogContent>
           {/* 모달 헤더 */}
+          <DialogHeader>
+            <DialogTitle>Chat</DialogTitle>
+          </DialogHeader>
           <div className="flex items-center justify-between p-4 border-b">
-            <h2 className="text-xl font-semibold">Chat</h2>
-            <button className="text-gray-500 hover:text-gray-700 focus:outline-none" onClick={toggleModal}>
-              ✖️
-            </button>
+            <button
+              className="text-gray-500 hover:text-gray-700 focus:outline-none"
+              onClick={closeModal} // 닫기 버튼
+            />
           </div>
 
           {/* 탭 */}
@@ -45,7 +41,7 @@ const ChatModal = () => {
               className={`flex-1 py-2 text-center ${
                 activeTab === 'list' ? 'border-b-2 border-blue-500 font-semibold' : ''
               }`}
-              onClick={() => switchTab('list')}
+              onClick={() => setActiveTab('list')}
             >
               채팅 리스트
             </button>
@@ -53,7 +49,7 @@ const ChatModal = () => {
               className={`flex-1 py-2 text-center ${
                 activeTab === 'room' ? 'border-b-2 border-blue-500 font-semibold' : ''
               }`}
-              onClick={() => switchTab('room')}
+              onClick={() => setActiveTab('room')}
             >
               채팅방
             </button>
@@ -67,7 +63,7 @@ const ChatModal = () => {
               <ChatRoom chatroomId={activeChatroomId} />
             )}
           </div>
-        </div>
+        </DialogContent>
       </Dialog>
     </>
   );
