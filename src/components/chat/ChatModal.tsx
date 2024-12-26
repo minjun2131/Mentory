@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import ChatList from './ChatList';
 import ChatRoom from './ChatRoom';
 import useModalStore from '@/store/chatModalStore';
+import Image from 'next/image';
 
 const ChatModal = () => {
   const { isOpen, openModal, closeModal } = useModalStore();
@@ -15,10 +16,10 @@ const ChatModal = () => {
     <>
       {/* 플로팅 채팅 버튼 */}
       <button
-        className="fixed bottom-5 right-5 p-4 bg-blue-600 text-white rounded-full shadow-lg focus:outline-none"
+        className="fixed bottom-5 right-5 p-4 focus:outline-none"
         onClick={openModal} // 모달 열기
       >
-        💬
+        <Image src="/images/chat.png" alt="Mentory_Chat_Logo" width={60} height={60} className="cursor-pointer" />
       </button>
 
       {/* 채팅 모달 */}
@@ -56,12 +57,16 @@ const ChatModal = () => {
           </div>
 
           {/* Content */}
-          <div className="flex-1 overflow-y-auto">
-            {activeTab === 'list' ? (
-              <ChatList onSelectChatroom={setActiveChatroomId} />
-            ) : (
-              <ChatRoom chatroomId={activeChatroomId} />
-            )}
+          <div className="flex-1 flex overflow-hidden" style={{ height: '400px' }}>
+            {' '}
+            <div className="flex-1 overflow-y-auto">
+              {' '}
+              {activeTab === 'list' ? (
+                <ChatList onSelectChatroom={setActiveChatroomId} />
+              ) : (
+                <ChatRoom chatroomId={activeChatroomId} />
+              )}
+            </div>
           </div>
         </DialogContent>
       </Dialog>
