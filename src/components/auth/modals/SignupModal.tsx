@@ -2,7 +2,7 @@
 
 import React from 'react';
 import ModalWrapper from '../../ui/ModalWrapper';
-import { useModalStore } from '@/app/store/modalStore';
+import { useModalStore } from '@/store/modalStore';
 import SignupForm from '@/components/auth/forms/SignupForm';
 
 const SignupModal: React.FC = () => {
