@@ -57,12 +57,16 @@ const ChatModal = () => {
           </div>
 
           {/* Content */}
-          <div className="flex-1 overflow-y-auto">
-            {activeTab === 'list' ? (
-              <ChatList onSelectChatroom={setActiveChatroomId} />
-            ) : (
-              <ChatRoom chatroomId={activeChatroomId} />
-            )}
+          <div className="flex-1 flex overflow-hidden" style={{ height: '400px' }}>
+            {' '}
+            <div className="flex-1 overflow-y-auto">
+              {' '}
+              {activeTab === 'list' ? (
+                <ChatList onSelectChatroom={setActiveChatroomId} />
+              ) : (
+                <ChatRoom chatroomId={activeChatroomId} />
+              )}
+            </div>
           </div>
         </DialogContent>
       </Dialog>

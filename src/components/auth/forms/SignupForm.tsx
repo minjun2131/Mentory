@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useModalStore } from '@/store/modalStore';
-import { signUp } from '@/utils/supabase/auth';
+import { createClient } from '@/utils/supabase/client';
 
 const SignupForm: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -12,6 +12,7 @@ const SignupForm: React.FC = () => {
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [passwordMatch, setPasswordMatch] = useState<boolean | null>(null);
   const [name, setName] = useState('');
+  const [error, setError] = useState<string | null>(null);
   const { open } = useModalStore();
 
   useEffect(() => {
@@ -28,12 +29,22 @@ const SignupForm: React.FC = () => {
     if (password !== confirmPassword) {
       return; //이러면 이제 에러있으면 진행이 안되겠지....?아마....?
     }
+
+    const supabase = createClient();
     try {
-      await signUp(email, password, name);
-      alert('회원가입에 성공했습니다.')
+      const { data, error } = await supabase.auth.signUp({ email, password });
+      if (error) throw new Error(error.message);
+
+      const userId = data.user?.id;
+
+      if (userId) {
+        const { error: userError } = await supabase.from('users').insert([{ id: userId, name }]);
+        if (userError) throw new Error(userError.message);
+      }
+      alert('회원가입에 성공했습니다.');
       open('login');
     } catch (error: any) {
-      alert(`회원가입에 실패했습니다.${error.message}`);
+      setError(error.message);
     }
   };
 
@@ -44,6 +55,7 @@ const SignupForm: React.FC = () => {
       </div>
       <div>
         <h2 className="text-2xl font-bold text-center mb-4">회원가입</h2>
+        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
         <input
           type="email"
           placeholder="이메일"
@@ -67,7 +79,6 @@ const SignupForm: React.FC = () => {
           className="border p-2 w-full rounded mb-4 bg-gray-200 placeholder-black"
         />
         {passwordMatch === false && <p className="text-red-500 text-sm mb-4">비밀번호가 일치하지 않습니다.</p>}
-        {/* {passwordMatch === true && <p className="text-red-500 text-sm mb-4">비밀번호가 일치합니다.</p>} */}
         <input
           type="text"
           placeholder="이름"
