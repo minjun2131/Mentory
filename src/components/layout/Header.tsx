@@ -1,23 +1,14 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
-import  Link  from 'next/link';
-import { useModalStore } from '@/app/store/modalStore';
+import Link from 'next/link';
+import { useModalStore } from '@/store/modalStore';
+import { authStore } from '@/store/authStore';
 
 const Header = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [profileImage, setProfileImage] = useState<string | null>(null);
-  const{open} = useModalStore()
-
-  useEffect(() => {
-    const user = {
-      loggedIn: false,
-      profileImage: ''
-    };
-    setIsLoggedIn(user.loggedIn);
-    setProfileImage(user.profileImage);
-  }, []);
+  const { isLoggedIn, profileImage } = authStore();
+  const { open } = useModalStore();
 
   return (
     <header className="sticky top-0 flex justify-between items-center bg-white p-4 shadow">

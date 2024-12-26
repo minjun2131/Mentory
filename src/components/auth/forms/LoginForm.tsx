@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { useModalStore } from '@/app/store/modalStore';
+import { useModalStore } from '@/store/modalStore';
 import { logIn } from '@/utils/supabase/auth';
 
 const LoginForm: React.FC = () => {
