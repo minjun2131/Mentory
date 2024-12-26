@@ -1,4 +1,5 @@
 import { createClient } from './client';
+import { authStore, fetchUserProfile } from '@/store/authStore';
 
 export async function signUp(email: string, password: string, name: string) {
   const supabase = createClient();
@@ -25,6 +26,12 @@ export async function logIn(email: string, password: string) {
   if (error) {
     throw new Error(error.message);
   }
+
+  const authData = await fetchUserProfile();
+  if (authData) {
+    authStore.getState().setAuthState(authData);
+  }
+
   return data;
 }
 
