@@ -8,16 +8,16 @@ import { logIn } from '@/utils/supabase/auth';
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { open,close } = useModalStore();
+  const { open, close } = useModalStore();
 
-  const handleLogin = async() => {
+  const handleLogin = async () => {
     // console.log('로그인이 되는가!!!!');
-try{
-await logIn(email,password)
-close()
-} catch (error:any) {
-  alert(`로그인에 실패했습니다.${error.message}`)
-}
+    try {
+      await logIn(email, password);
+      close();
+    } catch (error: any) {
+      alert(`로그인에 실패했습니다.${error.message}`);
+    }
   };
 
   return (
