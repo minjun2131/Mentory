@@ -79,3 +79,8 @@
     font-weight: inherit; /* 부모 두께 상속 */
   }
 }
+
+/* yearMonthCalendar 관련 설정 */
+.rdp-vhidden {
+  @apply hidden;
+}
