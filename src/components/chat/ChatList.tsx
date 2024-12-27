@@ -20,8 +20,9 @@ const ChatList = ({ onSelectChatroom }: { onSelectChatroom: (id: string, userId:
         data: { session },
         error
       } = await supabase.auth.getSession();
-      console.log({ session }); // session.user_metadata.avatar_url
-       // session.user_metadata.user_name
+      // console.log({ session });
+      // session.user_metadata.avatar_url
+      // session.user_metadata.user_name로 고쳐보기
 
       if (error) {
         console.error('세션 가져오기 실패:', error);
