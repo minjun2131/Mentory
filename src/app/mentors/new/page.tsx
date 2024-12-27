@@ -6,6 +6,7 @@ import Introduction from './_components/Introduction';
 import { useForm } from 'react-hook-form';
 import { steps } from '@/utils/mentorSteps';
 import Career from './_components/Career';
+import HashTags from './_components/HashTags';
 
 const MentorRegistrationPage = () => {
   const { Funnel, Step, next, prev, currentStep } = useFunnel(steps.order[0]);
@@ -13,7 +14,8 @@ const MentorRegistrationPage = () => {
 
   const handleNext = () => {
     const nextStep = steps.getNextStep(currentStep);
-    if (nextStep && formReturn.formState.isValid) next(nextStep);
+    // if (nextStep && formReturn.formState.isValid) next(nextStep);
+    next(nextStep!);
   };
 
   const handlePrev = () => {
@@ -31,6 +33,9 @@ const MentorRegistrationPage = () => {
             </Step>
             <Step name="careers">
               <Career onNext={handleNext} onPrev={handlePrev} formReturn={formReturn} />
+            </Step>
+            <Step name="hashTags">
+              <HashTags onNext={handleNext} onPrev={handlePrev} formReturn={formReturn} />
             </Step>
           </Funnel>
         </form>
