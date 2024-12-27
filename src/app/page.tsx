@@ -43,7 +43,7 @@ const CommunitySection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between">
         <div className="text-left flex-1">
           <h3 className="text-3xl font-extrabold mb-6">Enjoy our community</h3>
-          <p className="text-xl mb-8 font-medium">Let's be together and grow together</p>
+          <p className="text-xl mb-8 font-medium">Let&apos;s be together and grow together</p>
           <button
             onClick={handleJoinClick}
             className="w-[200px] py-4 bg-[#D9D9D9] text-black rounded-full text-xl font-bold hover:bg-gray-400 shadow-md transition-colors"
@@ -65,8 +65,14 @@ const CommunitySection: React.FC = () => {
   );
 };
 
+interface LoggedMentor {
+  profile_image: string | null;
+  introduction: string | null;
+  user_id: string;
+}
+
 export default function Home() {
-  const [mentors, setMentors] = useState<any[]>([]);
+  const [mentors, setMentors] = useState<LoggedMentor[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
