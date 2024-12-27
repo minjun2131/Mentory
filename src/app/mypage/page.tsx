@@ -1,14 +1,12 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useUserProfile } from './_hooks/useUserProfile';
 import Link from 'next/link';
 import ProfileImage from './_components/ProfileImage';
 
 const MyPage = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const { data, isPending, isError } = useUserProfile(isLoggedIn);
+  const { data, isPending, isError } = useUserProfile();
 
   if (isPending) {
     return <div>로딩 중...</div>;
@@ -33,14 +31,20 @@ const MyPage = () => {
       </div>
 
       {/* 버튼 그룹 */}
-      <div className="w-64 space-y-4">
-        <Link href="/mypage/edit">
-          <button className="w-full py-3 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">
-            프로필 사진 변경
-          </button>
+      <div className="w-64 space-y-4 text-center">
+        <Link
+          href="/mypage/edit"
+          className="w-full py-3 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 inline-block"
+        >
+          프로필 사진 변경
         </Link>
         <button className="w-full py-3 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">수강 캘린더</button>
-        <button className="w-full py-3 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">멘토 신청</button>
+        <Link
+          href="/mentors/new"
+          className="w-full py-3 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 inline-block"
+        >
+          멘토신청
+        </Link>
       </div>
     </div>
   );
