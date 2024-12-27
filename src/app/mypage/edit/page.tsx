@@ -105,7 +105,7 @@ const EditProfileModal = () => {
 
           {/* 입력 필드 */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Name</label>
+            <label className="block text-sm font-normal text-gray-700">Name</label>
             <input
               type="text"
               value={name}

@@ -13,6 +13,7 @@ const SignupForm: React.FC = () => {
   const [passwordMatch, setPasswordMatch] = useState<boolean | null>(null);
   const [name, setName] = useState('');
   const [error, setError] = useState<string | null>(null);
+  //이거 오류구현을 어떻게 표현해야 할까나???
   const { open } = useModalStore();
 
   useEffect(() => {
@@ -43,9 +44,12 @@ const SignupForm: React.FC = () => {
       }
       alert('회원가입에 성공했습니다.');
       open('login');
-    } catch (error: any) {
-      setError(error.message);
-    }
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('에러가 발생했습니다.');
+      }    }
   };
 
   return (

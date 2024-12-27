@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
-}
-
 @layer utilities {
   .text-balance {
     text-wrap: balance;
@@ -14,6 +10,7 @@ body {
 
 @layer base {
   :root {
+    --font-seoul-hangang: 'SeoulHangang', sans-serif;
     --background: 0 0% 100%;
     --foreground: 224 71.4% 4.1%;
     --card: 0 0% 100%;
@@ -74,6 +71,12 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-seoul-hangang);
+    font-weight: 700;
+  }
+  * {
+    font-family: inherit; /* 부모 폰트 상속 */
+    font-weight: inherit; /* 부모 두께 상속 */
   }
 }
 

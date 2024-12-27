@@ -7,15 +7,18 @@ import SignupModal from '@/components/auth/modals/SignupModal';
 import Footer from '@/components/layout/Footer';
 import Providers from '@/components/providers/RQProvider';
 
-const geistSans = localFont({
-  src: './fonts/GeistVF.woff',
-  variable: '--font-geist-sans',
-  weight: '100 900'
-});
-const geistMono = localFont({
-  src: './fonts/GeistMonoVF.woff',
-  variable: '--font-geist-mono',
-  weight: '100 900'
+const seoulHangang = localFont({
+  src: [
+    {
+      path: './fonts/SeoulHangangM.woff',
+      weight: '400'
+    },
+    {
+      path: './fonts/SeoulHangangB.woff',
+      weight: '700'
+    }
+  ],
+  variable: '--font-seoul-hangang'
 });
 
 export const metadata: Metadata = {
@@ -30,7 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${seoulHangang.variable} antialiased`}>
         <Header />
 
         <Providers>
