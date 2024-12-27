@@ -8,7 +8,7 @@ import ProfileImage from './_components/ProfileImage';
 const MyPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const { data, isPending, isError } = useUserProfile(isLoggedIn);
+  const { data, isPending, isError } = useUserProfile();
 
   if (isPending) {
     return <div>로딩 중...</div>;

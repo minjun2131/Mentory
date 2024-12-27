@@ -27,7 +27,7 @@ const EditProfileModal = () => {
     login();
   }, []);
 
-  const { data, isPending, isError } = useUserProfile(isLoggedIn);
+  const { data, isPending, isError } = useUserProfile();
   const profileData = Array.isArray(data) && data.length > 0 ? data[0] : null;
 
   const [name, setName] = useState('');
