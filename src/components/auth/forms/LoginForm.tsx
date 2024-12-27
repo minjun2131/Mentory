@@ -18,8 +18,12 @@ const LoginForm: React.FC = () => {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw new Error(error.message);
       close();
-    } catch (error: any) {
-      setError(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('에러가 발생했습니다.');
+      }
     }
   };
 
