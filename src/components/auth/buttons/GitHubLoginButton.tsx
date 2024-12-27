@@ -7,12 +7,9 @@ const GitHubLoginButton: React.FC = () => {
   const handleGitHubLogin = async () => {
     try {
       await signInWithGithub();
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        alert(`GitHub 로그인에 실패했습니다`);
-      } else {
-        alert('GitHub 로그인 중 알 수 없는 오류가 발생했습니다.');
-      }
+    } catch (error) {
+      console.error('GitHub 로그인 실패:', error);
+      alert('GitHub 로그인에 실패했습니다.');
     }
   };
 
