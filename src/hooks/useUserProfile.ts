@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import { getUserProfile } from "../_lib/profile"
+import { getUserProfile } from "@/lib/profile"
 
 export const useUserProfile = () => {
     const {data, isPending,isError,error } = useQuery({

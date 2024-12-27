@@ -65,7 +65,7 @@ const ChatModal = () => {
           </div>
 
           {/* Content */}
-          <div className="flex-1 flex overflow-hidden" style={{ height: '400px' }}>
+          <div className="flex-1 flex overflow-hidden h-[500px]">
             <div className="flex-1 overflow-y-auto">
               {activeTab === 'list' ? (
                 <ChatList onSelectChatroom={handleSelectChatroom} />

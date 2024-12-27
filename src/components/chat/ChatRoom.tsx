@@ -70,9 +70,16 @@ const ChatRoom = ({ chatroomId, userId }: { chatroomId: string | null; userId: s
 
   return (
     <div className="p-4 flex flex-col h-full">
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto flex flex-col">
         {messages.map((message) => (
-          <div key={message.id} className="p-2 mb-3 rounded-lg bg-blue-500 text-white self-end">
+          <div
+            key={message.id}
+            className={`p-2 mb-3 rounded-lg max-w-[60%] break-words ${
+              message.sender_id === userId
+                ? 'bg-blue-500 text-white self-end ml-auto'
+                : 'bg-blue-100 text-black self-start mr-auto'
+            }`}
+          >
             {message.content}
           </div>
         ))}
