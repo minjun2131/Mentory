@@ -101,11 +101,6 @@ const ChatList = ({ onSelectChatroom }: { onSelectChatroom: (id: string, userId:
             </li>
           );
         })}
-        {/* {chatRooms.map((room) => (
-          <li key={room.id} onClick={() => userId && onSelectChatroom(room.id, userId)}>
-            {room.id}
-          </li>
-        ))} */}
       </ul>
     </div>
   );
