@@ -11,6 +11,13 @@ const ChatModal = () => {
   const { isOpen, openModal, closeModal } = useModalStore();
   const [activeTab, setActiveTab] = useState<'list' | 'room'>('list');
   const [activeChatroomId, setActiveChatroomId] = useState<string | null>(null);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+
+  const handleSelectChatroom = (chatroomId: string, userId: string) => {
+    setActiveChatroomId(chatroomId); // 선택된 채팅방 ID 설정
+    setCurrentUserId(userId); // 현재 사용자 ID
+    setActiveTab('room'); // 탭을 'room'으로 전환
+  };
 
   return (
     <>
@@ -62,9 +69,9 @@ const ChatModal = () => {
             <div className="flex-1 overflow-y-auto">
               {' '}
               {activeTab === 'list' ? (
-                <ChatList onSelectChatroom={setActiveChatroomId} />
+                <ChatList onSelectChatroom={handleSelectChatroom} />
               ) : (
-                <ChatRoom chatroomId={activeChatroomId} />
+                <ChatRoom chatroomId={activeChatroomId} userId={currentUserId} />
               )}
             </div>
           </div>
