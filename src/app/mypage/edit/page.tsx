@@ -9,25 +9,7 @@ const EditProfileModal = () => {
   const router = useRouter();
   const profileUpdate = useUpdateProfileImage();
 
-  // 로컬 스토리지나 쿠키, 혹은 다른 방법으로 isLoggedIn 상태를 가져오는 방식
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-
-  // 로그인 상태 확인 (로컬 스토리지나 쿠키에서 가져오기)
-  useEffect(() => {
-    const login = async () => {
-      try {
-        // 더미 계정으로 로그인 시도
-        setIsLoggedIn(true); // 로그인 성공 시 상태 업데이트
-      } catch (error) {
-        console.log('로그인 실패: ' + (error as Error).message);
-      }
-    };
-
-    // 페이지가 렌더링될 때 로그인 시도
-    login();
-  }, []);
-
-  const { data, isPending, isError } = useUserProfile(isLoggedIn);
+  const { data, isPending, isError } = useUserProfile();
   const profileData = Array.isArray(data) && data.length > 0 ? data[0] : null;
 
   const [name, setName] = useState('');
