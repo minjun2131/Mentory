@@ -44,9 +44,12 @@ const SignupForm: React.FC = () => {
       }
       alert('회원가입에 성공했습니다.');
       open('login');
-    } catch (error: any) {
-      setError(error.message);
-    }
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('에러가 발생했습니다.');
+      }    }
   };
 
   return (
