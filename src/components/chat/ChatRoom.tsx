@@ -3,8 +3,10 @@
 import { Database } from '@/types/supabase';
 import { createClient } from '@/utils/supabase/client';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
-type Message = Database['public']['Tables']['messages']['Row'];
+type Message = Database['public']['Tables']['messages']['Row'] & { users: User };
+type User = Database['public']['Tables']['users']['Row'];
 
 const ChatRoom = ({ chatroomId, userId }: { chatroomId: string | null; userId: string | null }) => {
   const supabase = createClient();
@@ -72,15 +74,32 @@ const ChatRoom = ({ chatroomId, userId }: { chatroomId: string | null; userId: s
     <div className="p-4 flex flex-col h-full">
       <div className="flex-1 overflow-y-auto flex flex-col">
         {messages.map((message) => (
-          <div
-            key={message.id}
-            className={`p-2 mb-3 rounded-lg max-w-[60%] break-words ${
-              message.sender_id === userId
-                ? 'bg-blue-500 text-white self-end ml-auto'
-                : 'bg-blue-100 text-black self-start mr-auto'
-            }`}
-          >
-            {message.content}
+          <div key={message.id} className="flex">
+            <div className="max-w-[60%]">
+              {message.sender_id !== userId && message.users.profile_image ? (
+                <div className="flex">
+                  <div className="mr-3">
+                    <Image
+                      src={message.users.profile_image}
+                      alt="Profile"
+                      width={40}
+                      height={40}
+                      className="rounded-full  object-cover max-w-[40px] min-w-[40px]"
+                    />
+                  </div>
+                  <div className=" w-full ">
+                    <p>{message.sender_id === userId ? null : `${message.users.name}`}</p>
+                    <div className={`p-2 mb-3 rounded-lg  w-auto break-all bg-blue-100 text-black   `}>
+                      {message.content}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className={`p-2 mb-3 rounded-lg w-auto break-all bg-blue-500 text-white`}>
+                  {message.content}
+                </div>
+              )}
+            </div>
           </div>
         ))}
       </div>

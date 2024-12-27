@@ -1,3 +1,5 @@
+'use client'
+
 import { Database } from '@/types/supabase';
 import { createClient } from '@/utils/supabase/client';
 import { useState, useEffect } from 'react';
@@ -37,7 +39,6 @@ export default function ChatItem({ userId, room, onSelectChatroom }: ChatItemPro
 			if (error) return { profileImage: "", name: '채팅방' };
 			return { profileImage: `${data[0]?.profile_image}`, name: `${data[0]?.name}님과의 채팅방` };
 		} 
-
 		return { profileImage: "", name: '채팅방' };
 	};
 	
