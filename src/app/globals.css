@@ -76,3 +76,8 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* yearMonthCalendar 관련 설정 */
+.rdp-vhidden {
+  @apply hidden;
+}
