@@ -59,14 +59,19 @@ const ChatRoom = ({ chatroomId }: { chatroomId: string | null }) => {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
+
   return (
     <div className="p-4 flex flex-col h-full">
       <h3 className="text-lg font-semibold mb-4">채팅방</h3>
       <div className="flex-1 overflow-y-auto">
         {messages.map((message) => (
-          <div
-            key={message.id}
-            className="p-2 mb-2 rounded-lg bg-blue-500 text-white self-end">
+          <div key={message.id} className="p-2 mb-2 rounded-lg bg-blue-500 text-white self-end">
             {message.id}: {message.content}
           </div>
         ))}
@@ -76,6 +81,7 @@ const ChatRoom = ({ chatroomId }: { chatroomId: string | null }) => {
           type="text"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={handleKeyDown}
           placeholder="메시지를 입력하세요..."
           className="flex-1 px-4 py-2 border rounded-lg focus:outline-none"
         />

@@ -12,6 +12,11 @@ const ChatModal = () => {
   const [activeTab, setActiveTab] = useState<'list' | 'room'>('list');
   const [activeChatroomId, setActiveChatroomId] = useState<string | null>(null);
 
+  const handleSelectChatroom = (chatroomId:string) => {
+    setActiveChatroomId(chatroomId)
+    setActiveTab('room')
+  }
+
   return (
     <>
       {/* 플로팅 채팅 버튼 */}
@@ -62,7 +67,7 @@ const ChatModal = () => {
           <div className="flex-1 flex overflow-hidden" style={{ height: '400px' }}>
             <div className="flex-1 overflow-y-auto">
               {activeTab === 'list' ? (
-                <ChatList onSelectChatroom={setActiveChatroomId} />
+                <ChatList onSelectChatroom={handleSelectChatroom} />
               ) : (
                 <ChatRoom chatroomId={activeChatroomId} />
               )}
