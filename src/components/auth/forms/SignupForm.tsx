@@ -56,7 +56,7 @@ const SignupForm: React.FC = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-4 sm:p-6 max-h-full flex flex-col justify-between">
       <div className="text-center mb-6">
         <Image src="/images/logo.png" alt="Mentory_Logo" width={300} height={70} className="mx-auto" />
       </div>
