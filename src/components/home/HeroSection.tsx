@@ -1,8 +1,10 @@
+'use client';
+
 import Image from 'next/image';
 import { useState } from 'react';
 
 export const HeroSection: React.FC = () => {
-const [searchHashtag,setSearchHashtag] = useState('')
+  const [searchHashtag, setSearchHashtag] = useState('');
 
   return (
     <section className="relative py-12">
