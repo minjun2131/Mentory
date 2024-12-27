@@ -27,18 +27,16 @@ const Header = () => {
           .eq('id', user.id)
           .single();
 
-          if (!error) {
-            setProfileImage(profileData?.profile_image || null)
-          }
+        if (!error) {
+          setProfileImage(profileData?.profile_image || null);
+        }
       } else {
-        setIsLoggedIn(false)
+        setIsLoggedIn(false);
       }
     };
 
-    fetchUserProfile()
-  },[]
-
-);
+    fetchUserProfile();
+  }, []);
 
   return (
     <header className="sticky top-0 flex justify-between items-center bg-white p-4 shadow">
@@ -49,13 +47,15 @@ const Header = () => {
       </div>
       <div className="flex items-center space-x-4">
         {isLoggedIn ? (
-          <Image
-            src={profileImage || '/images/profile.png'}
-            width={40}
-            height={40}
-            alt="profile_image"
-            className="w-10 h-10 rounded-full"
-          />
+          <Link href="/mypage">
+            <Image
+              src={profileImage || '/images/profile.png'}
+              width={40}
+              height={40}
+              alt="profile_image"
+              className="w-10 h-10 rounded-full"
+            />
+          </Link>
         ) : (
           <>
             <button
