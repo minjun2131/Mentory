@@ -39,7 +39,7 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="sticky top-0 flex justify-between items-center bg-white p-4 shadow">
+    <header className="sticky top-0 z-50 flex justify-between items-center bg-white p-4 shadow">
       <div className="flex items-center">
         <Link href="/">
           <Image src="/images/logo.png" alt="Mentory_Logo" width={150} height={40} className="mr-4 cursor-pointer" />
