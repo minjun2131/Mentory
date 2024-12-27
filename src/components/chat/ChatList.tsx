@@ -28,7 +28,7 @@ const ChatList = ({ onSelectChatroom }: { onSelectChatroom: (id: string) => void
       <h3 className="text-lg font-semibold mb-4">채팅 리스트</h3>
       <ul>
         {chatRooms.map((room) => (
-          <li key={room.id} onClick={() => onSelectChatroom(room.id)}>
+          <li key={room.id} onClick={() => onSelectChatroom(room.id)} className="bg-gray-200 border border-gray-300 rounded-lg p-3 mb-2 cursor-pointer transition duration-300 hover:bg-gray-300">
             {room.id}
           </li>
         ))}
