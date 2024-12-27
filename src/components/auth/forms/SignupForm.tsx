@@ -32,15 +32,18 @@ const SignupForm: React.FC = () => {
 
     const supabase = createClient();
     try {
-      const { data, error } = await supabase.auth.signUp({ email, password });
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            user_name: name,
+            avatar_url: ''
+          }
+        }
+      });
       if (error) throw new Error(error.message);
 
-      const userId = data.user?.id;
-
-      if (userId) {
-        const { error: userError } = await supabase.from('users').insert([{ id: userId, name }]);
-        if (userError) throw new Error(userError.message);
-      }
       alert('회원가입에 성공했습니다.');
       open('login');
     } catch (error: unknown) {
@@ -48,7 +51,8 @@ const SignupForm: React.FC = () => {
         setError(error.message);
       } else {
         setError('에러가 발생했습니다.');
-      }    }
+      }
+    }
   };
 
   return (
