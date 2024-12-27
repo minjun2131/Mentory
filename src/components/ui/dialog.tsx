@@ -67,9 +67,16 @@ const DialogTitle = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Title>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
 >(({ className, ...props }, ref) => (
-  <DialogPrimitive.Title ref={ref} className={cn('flex justify-center items-center', className)} {...props} />
-));
-DialogTitle.displayName = DialogPrimitive.Title.displayName;
+  <DialogPrimitive.Title
+    ref={ref}
+    className={cn(
+      "flex justify-center items-center",
+      className
+    )}
+    {...props}
+  />
+))
+DialogTitle.displayName = DialogPrimitive.Title.displayName
 
 const DialogDescription = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Description>,
