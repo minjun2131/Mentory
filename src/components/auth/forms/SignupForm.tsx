@@ -26,9 +26,8 @@ const SignupForm: React.FC = () => {
   }, [password, confirmPassword]);
 
   const handleSignup = async () => {
-    // console.log('회원가입이 되는가!!!!');
     if (password !== confirmPassword) {
-      return; //이러면 이제 에러있으면 진행이 안되겠지....?아마....?
+      return;
     }
 
     const supabase = createClient();
