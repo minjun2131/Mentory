@@ -8,13 +8,14 @@ import { useEffect, useState } from 'react';
 type ChatRoom = Database['public']['Tables']['chatrooms']['Row'];
 type User = Database['public']['Tables']['users']['Row'];
 
-const ChatList = ({ onSelectChatroom }: { onSelectChatroom: (id: string) => void }) => {
+const ChatList = ({ onSelectChatroom }: { onSelectChatroom: (id: string, userId: string) => void }) => {
   const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
+  const [userId, setUserId] = useState<string | null>(null);
   const [users, setUsers] = useState<User[]>([]);
+  const supabase = createClient();
 
   // 채팅방 목록 조회
   useEffect(() => {
-    const supabase = createClient();
     const fetchChatRooms = async () => {
       // 세션 가져오기
       const {
@@ -34,7 +35,7 @@ const ChatList = ({ onSelectChatroom }: { onSelectChatroom: (id: string) => void
 
       // 로그인된 유저 정보
       const user = session.user;
-      console.log('유저 ID:', user.id);
+      setUserId(user.id);
 
       // 유저가 속한 채팅방 조회
       const { data, error: fetchError } = await supabase
@@ -59,7 +60,7 @@ const ChatList = ({ onSelectChatroom }: { onSelectChatroom: (id: string) => void
     };
 
     fetchChatRooms();
-  }, []);
+  }, [supabase]);
 
   //채팅방 이름 생성
   const getChatRoomName = (room: ChatRoom) => {
@@ -91,14 +92,22 @@ const ChatList = ({ onSelectChatroom }: { onSelectChatroom: (id: string) => void
           return (
             <li
               key={room.id}
-              onClick={() => onSelectChatroom(room.id)}
+              onClick={() => userId && onSelectChatroom(room.id, userId)}
               className="bg-gray-200 border border-gray-300 rounded-lg p-3 mb-2 cursor-pointer transition duration-300 hover:bg-gray-300 flex items-center"
             >
-              {profileImage && <Image src={profileImage} alt="Profile" width="40" height="40" className="rounded-full mr-3" />}
+              {profileImage && (
+                <Image src={profileImage} alt="Profile" width={40} height={0} className="rounded-full mr-3" />
+              )}
               <span>{name}</span>
             </li>
           );
         })}
+
+        {/* {chatRooms.map((room) => (
+          <li key={room.id} onClick={() => userId && onSelectChatroom(room.id, userId)}>
+            {room.id}
+          </li>
+        ))} */}
       </ul>
     </div>
   );

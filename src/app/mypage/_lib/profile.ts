@@ -3,13 +3,16 @@ import { createClient } from "@/utils/supabase/client";
 const supabase = createClient();
 
 // 인증된 유저 정보 가져오기 => 반복이 너무 많아서 함수로 표현
-const getAuthenticatedUser = async () => {
-    const {data: {user}, error} = await supabase.auth.getUser();
-    if (error || !user) {
-        throw new Error(`유저 인증 실패: ${error!.message}`)
-    }
-    return user;
-} 
+export const getAuthenticatedUser = async () => {
+  const {
+    data: { user },
+    error
+  } = await supabase.auth.getUser();
+  if (error || !user) {
+    throw new Error(`유저 인증 실패: ${error!.message}`);
+  }
+  return user;
+}; 
 
 export const getUserProfile = async () => {
     try {
