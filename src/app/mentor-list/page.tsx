@@ -1,15 +1,28 @@
+'use client';
+
+import { useUserProfile } from '@/hooks/useUserProfile';
 import Link from 'next/link';
 
 const Mentors = () => {
   // 가상 데이터
-  const mentors = [
-    { id: 1, role: 'Frontend', name: 'Mentor', club: 'Sparta Coding Club', quote: 'Ya neodu gaebalja hal su isseo' },
-    { id: 2, role: 'Backend', name: 'Mentor', club: 'Sparta Coding Club', quote: 'Ya neodu gaebalja hal su isseo' },
-    { id: 3, role: 'Designer', name: 'Mentor', club: 'Sparta Coding Club', quote: 'Ya neodu gaebalja hal su isseo' },
-    { id: 4, role: 'Fullstack', name: 'Mentor', club: 'Sparta Coding Club', quote: 'Ya neodu gaebalja hal su isseo' },
-    { id: 5, role: 'Frontend', name: 'Mentor', club: 'Sparta Coding Club', quote: 'Ya neodu gaebalja hal su isseo' },
-    { id: 6, role: 'Backend', name: 'Mentor', club: 'Sparta Coding Club', quote: 'Ya neodu gaebalja hal su isseo' }
-  ];
+  const { data, isPending, isError } = useUserProfile();
+
+  if (isPending) {
+    return <div>로딩 중...</div>;
+  }
+
+  if (isError) {
+    return <div>프로필을 가져오는 데 실패했습니다.</div>;
+  }
+
+  if (!data) {
+    return <div>프로필 데이터가 존재하지 않습니다.</div>;
+  }
+  const mentors = Array.isArray(data) && data.length > 0 ? data[0] : null;
+
+  if (!mentors) {
+    return <div>멘토 데이터를 가져올 수 없습니다.</div>;
+  }
 
   return (
     <div className="bg-gray-100 min-h-screen">

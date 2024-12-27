@@ -1,10 +1,11 @@
-import { getUserProfile } from "@/lib/profile";
+
+import { getMentorProfile } from "@/lib/mentor";
 import { useQuery } from "@tanstack/react-query"
 
-export const useUserProfile = () => {
+export const useMentorProfile = () => {
     const {data, isPending,isError,error } = useQuery({
-        queryKey: ['users'],
-        queryFn: getUserProfile,
+        queryKey: ['mentors'],
+        queryFn: getMentorProfile,
         staleTime: 1000 * 60 * 5,
     });
     return {data: data || {},isPending, isError, error}
