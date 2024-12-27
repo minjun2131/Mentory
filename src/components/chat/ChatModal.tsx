@@ -34,7 +34,9 @@ const ChatModal = () => {
         <DialogContent>
           {/* 모달 헤더 */}
           <DialogHeader>
-            <DialogTitle>Chat</DialogTitle>
+            <DialogTitle>
+              <Image src="/images/logo.png" alt="Mentory_Logo" width={170} height={70} className="cursor-pointer" />
+            </DialogTitle>
           </DialogHeader>
           <div className="flex items-center justify-between p-4 border-b">
             <button
