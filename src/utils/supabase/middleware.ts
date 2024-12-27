@@ -31,9 +31,9 @@ export async function updateSession(request: NextRequest) {
 
   // IMPORTANT: DO NOT REMOVE auth.getUser()
 
-  const {} = await supabase.auth.getUser();
-  // console.log(user);
-
+  const {
+  } = await supabase.auth.getUser()
+  
   // if (
   //   !user &&
   //   !request.nextUrl.pathname.startsWith('/login') &&
