@@ -1,9 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-<<<<<<< HEAD
-import { updateUserProfileImage } from '@/lib/profile';
-=======
 import { updateUserProfileImage } from "../lib/profile";
->>>>>>> b7e27e8e859c10558b08fdc1a3a5bc6be63b3fd5
 
 export const useUpdateProfileImage = () => {
   const queryClient = useQueryClient();
