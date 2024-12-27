@@ -26,22 +26,24 @@ const SignupForm: React.FC = () => {
   }, [password, confirmPassword]);
 
   const handleSignup = async () => {
-    // console.log('회원가입이 되는가!!!!');
     if (password !== confirmPassword) {
-      return; //이러면 이제 에러있으면 진행이 안되겠지....?아마....?
+      return;
     }
 
     const supabase = createClient();
     try {
-      const { data, error } = await supabase.auth.signUp({ email, password });
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            user_name: name,
+            avatar_url: ''
+          }
+        }
+      });
       if (error) throw new Error(error.message);
 
-      const userId = data.user?.id;
-
-      if (userId) {
-        const { error: userError } = await supabase.from('users').insert([{ id: userId, name }]);
-        if (userError) throw new Error(userError.message);
-      }
       alert('회원가입에 성공했습니다.');
       open('login');
     } catch (error: unknown) {
@@ -49,11 +51,12 @@ const SignupForm: React.FC = () => {
         setError(error.message);
       } else {
         setError('에러가 발생했습니다.');
-      }    }
+      }
+    }
   };
 
   return (
-    <div className="p-6">
+    <div className="p-4 sm:p-6 max-h-full flex flex-col justify-between">
       <div className="text-center mb-6">
         <Image src="/images/logo.png" alt="Mentory_Logo" width={300} height={70} className="mx-auto" />
       </div>

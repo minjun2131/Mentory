@@ -12,7 +12,6 @@ const LoginForm: React.FC = () => {
   const { open, close } = useModalStore();
 
   const handleLogin = async () => {
-    // console.log('로그인이 되는가!!!!');
     const supabase = createClient();
     try {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
