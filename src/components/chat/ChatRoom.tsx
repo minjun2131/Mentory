@@ -128,7 +128,7 @@ const ChatRoom = ({ chatroomId, userId }: { chatroomId: string | null; userId: s
       <div className="flex-1 overflow-y-auto flex flex-col">
         {messages.map((message) => (
           <div key={message.id} className="w-full flex flex-col">
-            <div className={`max-w-[60%] ${message.sender_id !== userId ? 'self-start' : 'self-end'}`}>
+            <div className={`max-w-[65%] ${message.sender_id !== userId ? 'self-start' : 'self-end'}`}>
               {message.sender_id !== userId ? (
                 <IncomingMessage message={message} otherUser={otherUser} />
               ) : (
