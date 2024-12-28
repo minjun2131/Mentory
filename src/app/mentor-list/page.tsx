@@ -1,15 +1,29 @@
+'use client';
+
+import { useMentorProfile } from '@/hooks/useMentorProfile';
+import Image from 'next/image';
 import Link from 'next/link';
 
 const Mentors = () => {
   // 가상 데이터
-  const mentors = [
-    { id: 1, role: 'Frontend', name: 'Mentor', club: 'Sparta Coding Club', quote: 'Ya neodu gaebalja hal su isseo' },
-    { id: 2, role: 'Backend', name: 'Mentor', club: 'Sparta Coding Club', quote: 'Ya neodu gaebalja hal su isseo' },
-    { id: 3, role: 'Designer', name: 'Mentor', club: 'Sparta Coding Club', quote: 'Ya neodu gaebalja hal su isseo' },
-    { id: 4, role: 'Fullstack', name: 'Mentor', club: 'Sparta Coding Club', quote: 'Ya neodu gaebalja hal su isseo' },
-    { id: 5, role: 'Frontend', name: 'Mentor', club: 'Sparta Coding Club', quote: 'Ya neodu gaebalja hal su isseo' },
-    { id: 6, role: 'Backend', name: 'Mentor', club: 'Sparta Coding Club', quote: 'Ya neodu gaebalja hal su isseo' }
-  ];
+  const { data, isPending, isError } = useMentorProfile();
+
+  if (isPending) {
+    return <div>로딩 중...</div>;
+  }
+
+  if (isError) {
+    return <div>프로필을 가져오는 데 실패했습니다.</div>;
+  }
+
+  if (!data) {
+    return <div>프로필 데이터가 존재하지 않습니다.</div>;
+  }
+  const mentors = Array.isArray(data) && data.length > 0 ? data : [];
+  console.log(mentors);
+  if (!mentors) {
+    return <div>멘토 데이터를 가져올 수 없습니다.</div>;
+  }
 
   return (
     <div className="bg-gray-100 min-h-screen">
@@ -30,18 +44,23 @@ const Mentors = () => {
           {mentors.map((mentor) => (
             <div key={mentor.id} className="bg-white shadow-md rounded-lg overflow-hidden p-4">
               {/* 프로필 이미지 */}
-              <div className="w-full h-40 bg-gray-300 rounded-md"></div>
+              <div className="w-full h-40 bg-gray-300 rounded-md">
+                <Image
+                  src={mentor.profile_image || '/default-image.jpg'}
+                  alt="Mentor_Image"
+                  width={96}
+                  height={96}
+                  className="object-cover w-full h-40"
+                />
+              </div>
               {/* 내용 */}
               <div className="mt-4">
-                <h3 className="text-lg font-bold text-gray-700">{mentor.role}</h3>
-                <p className="text-gray-500 text-sm">{mentor.name}</p>
-                <p className="text-gray-400 text-sm mt-2">{mentor.club}</p>
-                <p className="italic text-gray-600 text-sm mt-2">{`"${mentor.quote}"`}</p>
+                <h3 className="text-lg font-bold text-gray-700">{mentor.introduction}</h3>
               </div>
               {/* 채팅 버튼 */}
               <div className="mt-4">
                 <Link
-                  href={`/mentors/${1}`}
+                  href={`/mentor-list/${mentor.user_id}`}
                   className="bg-blue-500 text-white text-sm font-medium py-2 px-4 rounded-md w-full hover:bg-blue-600"
                 >
                   Show 💬
