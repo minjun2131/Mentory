@@ -14,6 +14,7 @@ export const getAuthenticatedUser = async () => {
   return user;
 };
 
+
 export const getUserProfile = async () => {
   try {
     const user = await getAuthenticatedUser();
