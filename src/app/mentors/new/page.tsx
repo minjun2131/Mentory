@@ -9,6 +9,7 @@ import Career from './_components/Career';
 import HashTags from './_components/HashTags';
 import { useRegisterMentor } from '@/hooks/useRegisterMentor';
 import { MentorInsertData } from '@/types/mentor';
+import ProfileImage from './_components/ProfileImage';
 
 const MentorRegistrationPage = () => {
   const { Funnel, Step, next, prev, currentStep } = useFunnel(steps.order[0]);
@@ -44,6 +45,9 @@ const MentorRegistrationPage = () => {
             </Step>
             <Step name="hashTags">
               <HashTags onNext={handleNext} onPrev={handlePrev} formReturn={formReturn} />
+            </Step>
+            <Step name="profileImage">
+              <ProfileImage onNext={handleNext} onPrev={handlePrev} formReturn={formReturn} />
             </Step>
           </Funnel>
         </form>
