@@ -18,10 +18,10 @@ const Introduction = ({ onNext, onPrev, formReturn }: IntroductionProps) => {
 
   return (
     <div className="flex flex-col items-center">
-      <h2 className="font-bold">간단한 소개를 입력해주세요.</h2>
+      <h2 className="text-2xl font-bold mb-12 self-start">간단한 소개를 입력해주세요.</h2>
       <Textarea
         {...register(name, {
-          required: '필수 입력 항목입니다.'
+          // required: '필수 입력 항목입니다.'
         })}
       />
       {errors[name]?.message && <p>{errors[name].message as string}</p>}
