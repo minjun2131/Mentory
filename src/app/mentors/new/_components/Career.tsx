@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useFieldArray, UseFormReturn } from 'react-hook-form';
 import MoveActions from './MoveActions';
 import CareerFields from './CareerFields';
@@ -6,8 +6,8 @@ import CareerFields from './CareerFields';
 const initialCareerFields = {
   companyName: '',
   role: '',
-  startDate: undefined,
-  endDate: undefined,
+  durationStart: undefined,
+  durationEnd: undefined,
   duty: ''
 };
 
@@ -21,7 +21,10 @@ const Career = ({ onNext, onPrev, formReturn }: CareerProps) => {
   const { control } = formReturn;
   const name = 'careers';
   const { fields, append } = useFieldArray({ name, control });
-  if (fields.length === 0) append(initialCareerFields);
+
+  useEffect(() => {
+    if (fields.length === 0) append(initialCareerFields);
+  }, []);
 
   const handleAddButtonClick = () => {
     append(initialCareerFields);

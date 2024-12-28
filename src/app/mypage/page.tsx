@@ -4,9 +4,11 @@ import React from 'react';
 import { useUserProfile } from './_hooks/useUserProfile';
 import Link from 'next/link';
 import ProfileImage from './_components/ProfileImage';
+import { useMentorProfile } from '@/hooks/useMentorProfile';
 
 const MyPage = () => {
   const { data, isPending, isError } = useUserProfile();
+  const { data: mentorData } = useMentorProfile();
 
   if (isPending) {
     return <div>로딩 중...</div>;
@@ -20,8 +22,10 @@ const MyPage = () => {
     return <div>프로필 데이터가 존재하지 않습니다.</div>;
   }
   const user = Array.isArray(data) && data.length > 0 ? data[0] : null;
+  const mentorArray = Object.values(mentorData);
+  console.log(mentorArray);
+  // const isMentorAccout = mentorArray.map(mentor => mentor.user_id)
 
-  console.log(user);
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white">
       {/* 프로필 아이콘 */}

@@ -1,5 +1,5 @@
 
-import { getMentorProfile } from "@/lib/mentor";
+import { getMentorProfile } from "@/lib/mentorProfile";
 import { useQuery } from "@tanstack/react-query"
 
 export const useMentorProfile = () => {

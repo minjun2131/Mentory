@@ -43,7 +43,6 @@ const Mentors = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {mentors.map(
             (mentor) => (
-              console.log(mentor),
               (
                 <div key={mentor.id} className="bg-white shadow-md rounded-lg overflow-hidden p-4">
                   {/* 프로필 이미지 */}
@@ -63,7 +62,7 @@ const Mentors = () => {
                   {/* 채팅 버튼 */}
                   <div className="mt-4">
                     <Link
-                      href={`/mentors/${1}`}
+                      href={`/mentors/${mentor.user_id}`}
                       className="bg-blue-500 text-white text-sm font-medium py-2 px-4 rounded-md w-full hover:bg-blue-600"
                     >
                       Show 💬
