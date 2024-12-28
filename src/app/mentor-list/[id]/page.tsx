@@ -3,9 +3,12 @@
 import ChatModal from '@/components/chat/ChatModal';
 import useModalStore from '@/store/chatModalStore';
 import { createClient } from '@/utils/supabase/client';
+import { useParams } from 'next/navigation';
 
 const MentorDetail = () => {
   const supabase = createClient();
+  const params = useParams();
+  console.log({ params });
   const { openModal } = useModalStore();
 
   const handleCreateChatroom = async () => {
@@ -22,8 +25,7 @@ const MentorDetail = () => {
       }
 
       const menteeId = session.user.id; // 로그인된 유저의 ID
-      console.log('로그인된 유저 ID (menteeId):', menteeId);
-      const mentorId = '458ce309-aad8-44f6-a4a3-f54c23bd54f6'; // 현재 페이지의 멘토 ID 필요
+      const mentorId = params.id; // 현재 페이지의 멘토 ID 필요
 
       // 이미 존재하는 채팅방 확인
       const { data: existingChatroom } = await supabase
