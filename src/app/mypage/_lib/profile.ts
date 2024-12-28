@@ -16,19 +16,20 @@ export const getAuthenticatedUser = async (): Promise<typeof user> => {
 };
 
 type Users = Database['public']['Tables']['users']['Row'];
-
 export const getUserProfile = async (): Promise<Users | null> => {
   try {
     const user = await getAuthenticatedUser();
     if (!user) {
       throw new Error('User is not authenticated');
     }
-    const { data: userProfile, error: userProfileError } = await supabase.from('users').select('*').eq('id', user.id);
+    const { data: userProfile, error: userProfileError } = await supabase.from('users').select('*').eq('id', user.id).returns<Users>();
+
     // 가져오고 싶은데이터가 여러개인데 single() 을 사용해서 생긴 오류
 
     if (userProfileError) {
       throw new Error(`프로필 정보를 가져오는 데 실패하였습니다. ${userProfileError.message}`);
     }
+
     return userProfile;
   } catch (error) {
     console.log(error);
