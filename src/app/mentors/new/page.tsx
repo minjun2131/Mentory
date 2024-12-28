@@ -15,13 +15,15 @@ import MoveActions from './_components/MoveActions';
 
 const MentorRegistrationPage = () => {
   const { Funnel, Step, next, prev, currentStep } = useFunnel(steps.order[0]);
-  const formReturn = useForm({ mode: 'onBlur' }); // 폼 요소가 포커스를 잃을 때마다 유효성 검사를 실행
-  const { isPending, mutate } = useRegisterMentor();
+  const formReturn = useForm({ mode: 'onSubmit' }); // 폼 요소가 포커스를 잃을 때마다 유효성 검사를 실행
+  const { isPending, mutate } = useRegisterMentor(next);
+  const {
+    trigger,
+  } = formReturn;
 
-  const handleNext = () => {
+  const handleNext = async () => {
     const nextStep = steps.getNextStep(currentStep);
-    // if (nextStep && formReturn.formState.isValid) next(nextStep);
-    next(nextStep!);
+    if (nextStep && await trigger()) next(nextStep);
   };
 
   const handlePrev = () => {
@@ -35,9 +37,13 @@ const MentorRegistrationPage = () => {
     mutate({ careers, hashTags, introduction, profileImage });
   };
 
+  const onSubmit = () => {
+    formReturn.handleSubmit(submitFormData)();
+  };
+
   return (
     <div className="h-lvh mt-16">
-      <form className="flex flex-col items-center" onSubmit={formReturn.handleSubmit(submitFormData)}>
+      <form className="flex flex-col items-center">
         <Funnel>
           <Step name="introduction">
             <Introduction formReturn={formReturn} />
@@ -55,7 +61,13 @@ const MentorRegistrationPage = () => {
             <Completion />
           </Step>
         </Funnel>
-        <MoveActions onNext={handleNext} onPrev={handlePrev} currentStep={currentStep} isPending={isPending}/>
+        <MoveActions
+          onNext={handleNext}
+          onPrev={handlePrev}
+          currentStep={currentStep}
+          isPending={isPending}
+          onSubmit={onSubmit}
+        />
       </form>
     </div>
   );

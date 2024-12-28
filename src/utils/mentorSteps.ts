@@ -1,6 +1,6 @@
 export const steps = {
   // 진행될 step의 순서, Funnel 컴포넌트 안에 Step 컴포넌트 순서는 상관 없음
-  order: ['introduction', 'profileImage', 'careers', 'hashTags', 'completion'],
+  order: ['introduction', 'profileImage', 'hashTags', 'careers', 'completion'],
   hasPrev(step: string): boolean {
     return this.getIndex(step) !== 0;
   },

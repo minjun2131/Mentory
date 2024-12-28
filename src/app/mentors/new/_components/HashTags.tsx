@@ -22,7 +22,7 @@ const HashTags = ({ formReturn }: HashTagsProps) => {
       <h2 className="text-2xl font-bold mb-12 self-start">멘토님을 나타내는 태그를 입력해주세요.</h2>
       <div className="flex">
         <div>
-          <Input value={tagName} onChange={(e) => setTagName(e.target.value)} />
+          <Input type='text' value={tagName} onChange={(e) => setTagName(e.target.value)} />
         </div>
         <button onClick={handleAddButtonClick}>추가</button>
       </div>
