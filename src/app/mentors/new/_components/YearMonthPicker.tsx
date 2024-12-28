@@ -17,7 +17,7 @@ interface YearMonthDatePickerProps {
 
 export function YearMonthDatePicker({ name, placeholder, formReturn }: YearMonthDatePickerProps) {
   const { watch, setValue } = formReturn;
-  const date = watch(name);
+  const date: Date = watch(name);
 
   const handleDateClick = (date: Date | undefined) => {
     setValue(name, date);

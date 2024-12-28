@@ -7,10 +7,13 @@ import { useForm } from 'react-hook-form';
 import { steps } from '@/utils/mentorSteps';
 import Career from './_components/Career';
 import HashTags from './_components/HashTags';
+import { useRegisterMentor } from '@/hooks/useRegisterMentor';
+import { MentorInsertData } from '@/types/mentor';
 
 const MentorRegistrationPage = () => {
   const { Funnel, Step, next, prev, currentStep } = useFunnel(steps.order[0]);
   const formReturn = useForm({ mode: 'onBlur' }); // 폼 요소가 포커스를 잃을 때마다 유효성 검사를 실행
+  const registerMentor = useRegisterMentor();
 
   const handleNext = () => {
     const nextStep = steps.getNextStep(currentStep);
@@ -23,10 +26,15 @@ const MentorRegistrationPage = () => {
     if (prevStep) prev(prevStep);
   };
 
+  const submitFormData = () => {
+    // 프로필 이미지 추가 필요
+    registerMentor.mutate(formReturn.getValues() as MentorInsertData);
+  };
+
   return (
     <div className="flex flex-col items-center h-lvh mt-16">
       <div>
-        <form onSubmit={formReturn.handleSubmit(() => {})}>
+        <form onSubmit={formReturn.handleSubmit(submitFormData)}>
           <Funnel>
             <Step name="introduction">
               <Introduction onNext={handleNext} onPrev={handlePrev} formReturn={formReturn} />

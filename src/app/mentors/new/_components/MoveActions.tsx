@@ -15,10 +15,12 @@ const MoveActions = ({ name, onPrev, onNext }: MoveActionsProps) => {
           이전
         </button>
       )}
-      {steps.hasNext(name) && (
+      {steps.hasNext(name) ? (
         <button type="button" onClick={() => onNext()}>
           다음
         </button>
+      ) : (
+        <button type="submit">등록하기</button>
       )}
     </div>
   );
