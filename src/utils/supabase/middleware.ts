@@ -1,5 +1,5 @@
-import { createServerClient } from '@supabase/ssr'
-import { NextResponse, type NextRequest } from 'next/server'
+import { createServerClient } from '@supabase/ssr';
+import { NextResponse, type NextRequest } from 'next/server';
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -31,9 +31,13 @@ export async function updateSession(request: NextRequest) {
 
   // IMPORTANT: DO NOT REMOVE auth.getUser()
 
-  const {
-  } = await supabase.auth.getUser()
-  
+  // const {
+  //   data: { user },
+  // } = await supabase.auth.getUser()
+  // console.log(user);
+
+  const {} = await supabase.auth.getUser();
+
   // if (
   //   !user &&
   //   !request.nextUrl.pathname.startsWith('/login') &&

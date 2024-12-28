@@ -6,7 +6,7 @@ export default function ProfileImage({ user }: { user: { profile_image?: string 
       {user?.profile_image ? (
         <Image
           src={user.profile_image}
-          alt="Profile Image"
+          alt="Profile_Image"
           width={96} 
           height={96}
           className="object-cover"

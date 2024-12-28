@@ -20,7 +20,6 @@ const Header = () => {
 
       if (user) {
         setIsLoggedIn(true);
-
         const { data: profileData, error } = await supabase
           .from('users')
           .select('profile_image')
