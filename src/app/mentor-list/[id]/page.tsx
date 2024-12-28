@@ -8,7 +8,6 @@ import { useParams } from 'next/navigation';
 const MentorDetail = () => {
   const supabase = createClient();
   const params = useParams();
-  console.log({ params });
   const { openModal } = useModalStore();
 
   const handleCreateChatroom = async () => {
