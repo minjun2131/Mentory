@@ -46,22 +46,33 @@ const ChatModal = () => {
 
           {/* 탭 */}
           <div className="flex border-b">
-            <button
-              className={`flex-1 py-2 text-center ${
-                activeTab === 'list' ? 'border-b-2 border-main font-semibold' : ''
-              }`}
-              onClick={() => setActiveTab('list')}
-            >
-              채팅 리스트
-            </button>
-            <button
-              className={`flex-1 py-2 text-center ${
-                activeTab === 'room' ? 'border-b-2 border-main font-semibold' : ''
-              }`}
-              onClick={() => setActiveTab('room')}
-            >
-              채팅방
-            </button>
+            {/* 채팅 리스트 탭 */}
+            {activeTab === 'list' && (
+              <button
+                className="flex-1 py-2 text-center border-b-2 border-main font-semibold"
+                onClick={() => setActiveTab('list')}
+              >
+                채팅 리스트
+              </button>
+            )}
+
+            {/* 채팅방 탭 (채팅방에 있을 때만 보이도록) */}
+            {activeTab === 'room' && (
+              <div className="flex w-full">
+                <button
+                  className="flex-1 py-2 mr-1 text-center border-b-2 border-gray font-semibold"
+                  onClick={() => setActiveTab('list')}
+                >
+                  채팅 리스트
+                </button>
+                <button
+                  className="flex-1 py-2 ml-1 text-center border-b-2 border-main font-semibold"
+                  onClick={() => setActiveTab('room')}
+                >
+                  채팅방
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Content */}
