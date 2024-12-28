@@ -3,7 +3,8 @@
 import { Database } from '@/types/supabase';
 import { createClient } from '@/utils/supabase/client';
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
+import OutgoingMessage from './OutgoingMessage';
+import IncomingMessage from './IncomingMessage';
 
 type Message = Database['public']['Tables']['messages']['Row'] & { users: User };
 type User = Database['public']['Tables']['users']['Row'];
@@ -119,28 +120,12 @@ const ChatRoom = ({ chatroomId, userId }: { chatroomId: string | null; userId: s
     <div className="p-4 flex flex-col h-full">
       <div className="flex-1 overflow-y-auto flex flex-col">
         {messages.map((message) => (
-          <div key={message.id} className="flex">
-            <div className="max-w-[60%]">
-              {message.sender_id !== userId && otherUser?.profile_image ? (
-                <div className="flex">
-                  <div className="mr-3">
-                    <Image
-                      src={otherUser.profile_image}
-                      alt="Profile"
-                      width={40}
-                      height={40}
-                      className="rounded-full object-cover max-w-[40px] min-w-[40px]"
-                    />
-                  </div>
-                  <div className="w-full">
-                    <p>{otherUser.name || '알 수 없는 사용자'}</p>
-                    <div className={`p-2 mb-3 rounded-lg w-auto break-all bg-blue-100 text-black`}>
-                      {message.content}
-                    </div>
-                  </div>
-                </div>
+          <div key={message.id} className="w-full flex flex-col">
+            <div className={`max-w-[60%] ${message.sender_id !== userId ? 'self-start' : 'self-end'}`}>
+              {message.sender_id !== userId ? (
+                <IncomingMessage message={message} otherUser={otherUser} />
               ) : (
-                <div className="p-2 mb-3 rounded-lg w-auto break-all bg-blue-500 text-white">{message.content}</div>
+                <OutgoingMessage message={message} />
               )}
             </div>
           </div>
