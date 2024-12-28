@@ -1,14 +1,11 @@
 import { Textarea } from '@/components/ui/textarea';
 import React from 'react';
 import { UseFormReturn } from 'react-hook-form';
-import MoveActions from './MoveActions';
 
 interface IntroductionProps {
-  onNext: () => void;
-  onPrev: () => void;
   formReturn: UseFormReturn;
 }
-const Introduction = ({ onNext, onPrev, formReturn }: IntroductionProps) => {
+const Introduction = ({ formReturn }: IntroductionProps) => {
   const {
     register,
     formState: { errors }
@@ -25,7 +22,6 @@ const Introduction = ({ onNext, onPrev, formReturn }: IntroductionProps) => {
         })}
       />
       {errors[name]?.message && <p>{errors[name].message as string}</p>}
-      <MoveActions onNext={onNext} onPrev={onPrev} name={name} />
     </div>
   );
 };

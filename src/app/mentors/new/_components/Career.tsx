@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useFieldArray, UseFormReturn } from 'react-hook-form';
-import MoveActions from './MoveActions';
 import CareerFields from './CareerFields';
 
 const initialCareerFields = {
@@ -12,12 +11,10 @@ const initialCareerFields = {
 };
 
 interface CareerProps {
-  onNext: () => void;
-  onPrev: () => void;
   formReturn: UseFormReturn;
 }
 
-const Career = ({ onNext, onPrev, formReturn }: CareerProps) => {
+const Career = ({ formReturn }: CareerProps) => {
   const { control } = formReturn;
   const name = 'careers';
   const { fields, append } = useFieldArray({ name, control });
@@ -41,7 +38,6 @@ const Career = ({ onNext, onPrev, formReturn }: CareerProps) => {
       <button type="button" onClick={handleAddButtonClick} className="mb-5">
         추가하기
       </button>
-      <MoveActions onNext={onNext} onPrev={onPrev} name={name} />
     </div>
   );
 };

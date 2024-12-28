@@ -10,11 +10,13 @@ import HashTags from './_components/HashTags';
 import { useRegisterMentor } from '@/hooks/useRegisterMentor';
 import ProfileImage from './_components/ProfileImage';
 import { uploadProfileImage } from '@/lib/upload';
+import Completion from './_components/Completion';
+import MoveActions from './_components/MoveActions';
 
 const MentorRegistrationPage = () => {
   const { Funnel, Step, next, prev, currentStep } = useFunnel(steps.order[0]);
   const formReturn = useForm({ mode: 'onBlur' }); // 폼 요소가 포커스를 잃을 때마다 유효성 검사를 실행
-  const registerMentor = useRegisterMentor();
+  const { isPending, mutate } = useRegisterMentor();
 
   const handleNext = () => {
     const nextStep = steps.getNextStep(currentStep);
@@ -30,29 +32,31 @@ const MentorRegistrationPage = () => {
   const submitFormData = async () => {
     const { careers, hashTags, introduction, profileImageFile } = formReturn.getValues();
     const profileImage = await uploadProfileImage({ type: 'mentor-profile', file: profileImageFile[0] });
-    registerMentor.mutate({ careers, hashTags, introduction, profileImage });
+    mutate({ careers, hashTags, introduction, profileImage });
   };
 
   return (
-    <div className="flex flex-col items-center h-lvh mt-16">
-      <div>
-        <form onSubmit={formReturn.handleSubmit(submitFormData)}>
-          <Funnel>
-            <Step name="introduction">
-              <Introduction onNext={handleNext} onPrev={handlePrev} formReturn={formReturn} />
-            </Step>
-            <Step name="careers">
-              <Career onNext={handleNext} onPrev={handlePrev} formReturn={formReturn} />
-            </Step>
-            <Step name="hashTags">
-              <HashTags onNext={handleNext} onPrev={handlePrev} formReturn={formReturn} />
-            </Step>
-            <Step name="profileImage">
-              <ProfileImage onNext={handleNext} onPrev={handlePrev} formReturn={formReturn} />
-            </Step>
-          </Funnel>
-        </form>
-      </div>
+    <div className="h-lvh mt-16">
+      <form className="flex flex-col items-center" onSubmit={formReturn.handleSubmit(submitFormData)}>
+        <Funnel>
+          <Step name="introduction">
+            <Introduction formReturn={formReturn} />
+          </Step>
+          <Step name="careers">
+            <Career formReturn={formReturn} />
+          </Step>
+          <Step name="hashTags">
+            <HashTags formReturn={formReturn} />
+          </Step>
+          <Step name="profileImage">
+            <ProfileImage formReturn={formReturn} />
+          </Step>
+          <Step name="completion">
+            <Completion />
+          </Step>
+        </Funnel>
+        <MoveActions onNext={handleNext} onPrev={handlePrev} currentStep={currentStep} isPending={isPending}/>
+      </form>
     </div>
   );
 };

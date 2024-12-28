@@ -1,15 +1,12 @@
 import { Input } from '@/components/ui/input';
 import React, { useState } from 'react';
-import MoveActions from './MoveActions';
 import { useFieldArray, UseFormReturn } from 'react-hook-form';
 
 interface HashTagsProps {
-  onNext: () => void;
-  onPrev: () => void;
   formReturn: UseFormReturn;
 }
 
-const HashTags = ({ onNext, onPrev, formReturn }: HashTagsProps) => {
+const HashTags = ({ formReturn }: HashTagsProps) => {
   const [tagName, setTagName] = useState('');
   const { getValues, control } = formReturn;
   const name = 'hashTags';
@@ -29,12 +26,11 @@ const HashTags = ({ onNext, onPrev, formReturn }: HashTagsProps) => {
         </div>
         <button onClick={handleAddButtonClick}>추가</button>
       </div>
-      <div className='flex gap-5'>
+      <div className="flex gap-5">
         {fields.map((field, idx) => (
           <div key={field.id}>{'#' + tags[idx]}</div>
         ))}
       </div>
-      <MoveActions onNext={onNext} onPrev={onPrev} name={name} />
     </div>
   );
 };

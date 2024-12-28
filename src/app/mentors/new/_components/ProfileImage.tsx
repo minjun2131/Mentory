@@ -1,15 +1,12 @@
 import Image from 'next/image';
 import React from 'react';
 import { UseFormReturn } from 'react-hook-form';
-import MoveActions from './MoveActions';
 
 interface ProfileImageProps {
-  onNext: () => void;
-  onPrev: () => void;
   formReturn: UseFormReturn;
 }
 
-const ProfileImage = ({ onNext, onPrev, formReturn }: ProfileImageProps) => {
+const ProfileImage = ({ formReturn }: ProfileImageProps) => {
   const { register, watch } = formReturn;
   const name = 'profileImageFile';
   const profileImageFile = watch(name);
@@ -35,7 +32,6 @@ const ProfileImage = ({ onNext, onPrev, formReturn }: ProfileImageProps) => {
       >
         이미지 변경하기
       </label>
-      <MoveActions onNext={onNext} onPrev={onPrev} name={name} />
     </div>
   );
 };
