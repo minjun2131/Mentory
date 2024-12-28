@@ -15,6 +15,7 @@ const ChatRoom = ({ chatroomId, userId }: { chatroomId: string | null; userId: s
   const [messages, setMessages] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>('');
   const [otherUser, setOtherUser] = useState<User | null>(null);
+  const [isComposing, setIsComposing] = useState<boolean>(false);
 
   useEffect(() => {
     if (!chatroomId || !userId) return;
@@ -111,8 +112,14 @@ const ChatRoom = ({ chatroomId, userId }: { chatroomId: string | null; userId: s
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      e.preventDefault();
-      handleSendMessage();
+      // 조합 중 아닐때만 메시지 전송
+      if (!isComposing) {
+        e.preventDefault();
+        handleSendMessage();
+      } else {
+        // 조합 중일 때는 기본 동작 방지
+        e.preventDefault();
+      }
     }
   };
 
@@ -137,6 +144,8 @@ const ChatRoom = ({ chatroomId, userId }: { chatroomId: string | null; userId: s
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleKeyDown}
+          onCompositionStart={() => setIsComposing(true)}
+          onCompositionEnd={() => setIsComposing(false)}
           placeholder="메시지를 입력하세요..."
           className="flex-1 px-4 py-2 border rounded-lg focus:outline-none"
         />
