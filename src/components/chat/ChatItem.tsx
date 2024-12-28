@@ -46,7 +46,7 @@ export default function ChatItem({ userId, room, onSelectChatroom }: ChatItemPro
     <li
       key={room.id}
       onClick={() => userId && onSelectChatroom(room.id, userId)}
-      className="bg-gray-200 border border-gray-300 rounded-lg p-3 mb-2 cursor-pointer transition duration-300 hover:bg-gray-300 flex items-center"
+      className="bg-gray-200 border border-gray-300 rounded-lg p-3 mb-3 cursor-pointer transition duration-300 hover:bg-gray-300 flex items-center"
     >
       {chat.profileImage && (
         <Image
@@ -54,7 +54,7 @@ export default function ChatItem({ userId, room, onSelectChatroom }: ChatItemPro
           alt="Profile_Image"
           width={40}
           height={40}
-          className="rounded-full mr-3 object-cover w-10 h-10"
+          className="rounded-full mr-2 object-cover w-10 h-10"
         />
       )}
       <span>{chat.name}</span>
