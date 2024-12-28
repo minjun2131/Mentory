@@ -2,7 +2,7 @@
 
 import { Database } from '@/types/supabase';
 import { createClient } from '@/utils/supabase/client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import OutgoingMessage from './OutgoingMessage';
 import IncomingMessage from './IncomingMessage';
 
@@ -16,6 +16,7 @@ const ChatRoom = ({ chatroomId, userId }: { chatroomId: string | null; userId: s
   const [message, setMessage] = useState<string>('');
   const [otherUser, setOtherUser] = useState<User | null>(null);
   const [isComposing, setIsComposing] = useState<boolean>(false);
+  const messageEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!chatroomId || !userId) return;
@@ -34,10 +35,8 @@ const ChatRoom = ({ chatroomId, userId }: { chatroomId: string | null; userId: s
           return;
         }
 
-        // 현재 유저와 상대방의 ID 구분
         const otherUserId = data.mentor_id === userId ? data.mentee_id : data.mentor_id;
 
-        // 상대방 정보 가져오기
         const { data: otherUserData, error: otherUserError } = await supabase
           .from('users')
           .select('*')
@@ -49,8 +48,7 @@ const ChatRoom = ({ chatroomId, userId }: { chatroomId: string | null; userId: s
           return;
         }
 
-        // 상태 업데이트
-        setOtherUser(otherUserData); // 상대방 정보 저장
+        setOtherUser(otherUserData);
       } catch (err) {
         console.error('참여자 정보 조회 실패:', err);
       }
@@ -62,7 +60,6 @@ const ChatRoom = ({ chatroomId, userId }: { chatroomId: string | null; userId: s
   useEffect(() => {
     if (!chatroomId) return;
 
-    // 채팅방 메시지 조회
     const fetchMessages = async () => {
       const { data, error } = await supabase.from('messages').select('*, users(*)').eq('chatroom_id', chatroomId);
 
@@ -75,7 +72,6 @@ const ChatRoom = ({ chatroomId, userId }: { chatroomId: string | null; userId: s
 
     fetchMessages();
 
-    // Supabase Realtime 구독 설정
     const channel = supabase
       .channel(`messages:chatroom_id=eq.${chatroomId}`)
       .on(
@@ -93,7 +89,13 @@ const ChatRoom = ({ chatroomId, userId }: { chatroomId: string | null; userId: s
     };
   }, [chatroomId]);
 
-  // 메시지 전송
+  // messages 변경 시 스크롤 이동
+  useEffect(() => {
+    if (messageEndRef.current) {
+      messageEndRef.current.scrollIntoView({ behavior: 'auto' });
+    }
+  }, [messages]);
+
   const handleSendMessage = async () => {
     if (!message.trim() || !userId || !chatroomId) return;
 
@@ -112,12 +114,10 @@ const ChatRoom = ({ chatroomId, userId }: { chatroomId: string | null; userId: s
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      // 조합 중 아닐때만 메시지 전송
       if (!isComposing) {
         e.preventDefault();
         handleSendMessage();
       } else {
-        // 조합 중일 때는 기본 동작 방지
         e.preventDefault();
       }
     }
@@ -137,6 +137,7 @@ const ChatRoom = ({ chatroomId, userId }: { chatroomId: string | null; userId: s
             </div>
           </div>
         ))}
+        <div ref={messageEndRef} />
       </div>
       <div className="flex items-center p-2 border-t">
         <input
