@@ -54,7 +54,7 @@ export default function ChatItem({ userId, room, onSelectChatroom }: ChatItemPro
           alt="Profile_Image"
           width={40}
           height={40}
-          className="rounded-full mr-3 object-cover max-w-[40px] min-w-[40px]"
+          className="rounded-full mr-3 object-cover w-10 h-10"
         />
       )}
       <span>{chat.name}</span>

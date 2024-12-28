@@ -14,13 +14,13 @@ const IncomingMessage: React.FC<IncomingMessageProps> = ({ message, otherUser })
       <div className="flex">
         <div className="mr-3">
           {otherUser?.profile_image && (
-            <Image
-              src={otherUser.profile_image}
-              alt="Profile"
-              width={40}
-              height={40}
-              className="rounded-full object-cover max-w-[40px] min-w-[40px]"
-            />
+              <Image
+                src={otherUser.profile_image}
+                alt="Profile"
+                width={40}
+                height={40}
+                className="rounded-full object-cover max-w-[40px] min-w-[40px]"
+              />
           )}
         </div>
         <div className="w-full">
