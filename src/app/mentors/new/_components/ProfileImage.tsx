@@ -11,7 +11,7 @@ interface ProfileImageProps {
 
 const ProfileImage = ({ onNext, onPrev, formReturn }: ProfileImageProps) => {
   const { register, watch } = formReturn;
-  const name = 'profileImage';
+  const name = 'profileImageFile';
   const profileImageFile = watch(name);
 
   return (

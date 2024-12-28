@@ -8,8 +8,8 @@ import { steps } from '@/utils/mentorSteps';
 import Career from './_components/Career';
 import HashTags from './_components/HashTags';
 import { useRegisterMentor } from '@/hooks/useRegisterMentor';
-import { MentorInsertData } from '@/types/mentor';
 import ProfileImage from './_components/ProfileImage';
+import { uploadProfileImage } from '@/lib/upload';
 
 const MentorRegistrationPage = () => {
   const { Funnel, Step, next, prev, currentStep } = useFunnel(steps.order[0]);
@@ -27,9 +27,10 @@ const MentorRegistrationPage = () => {
     if (prevStep) prev(prevStep);
   };
 
-  const submitFormData = () => {
-    // 프로필 이미지 추가 필요
-    registerMentor.mutate(formReturn.getValues() as MentorInsertData);
+  const submitFormData = async () => {
+    const { careers, hashTags, introduction, profileImageFile } = formReturn.getValues();
+    const profileImage = await uploadProfileImage({ type: 'mentor-profile', file: profileImageFile[0] });
+    registerMentor.mutate({ careers, hashTags, introduction, profileImage });
   };
 
   return (
