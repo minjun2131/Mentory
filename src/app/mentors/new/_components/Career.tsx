@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useFieldArray, UseFormReturn } from 'react-hook-form';
 import CareerFields from './CareerFields';
+import StepTitle from './StepTitle';
 
 const initialCareerFields = {
   companyName: '',
@@ -28,16 +29,22 @@ const Career = ({ formReturn }: CareerProps) => {
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <h2 className="text-2xl font-bold mb-12 self-start">멘토님의 경력을 알려주세요</h2>
+    <div className="flex flex-col items-center h-[425px]">
+      <StepTitle>멘토님의 경력을 알려주세요</StepTitle>
       <ul className="mb-5">
         {fields.map((field, idx) => (
           <CareerFields key={field.id} name={`${name}.${idx}`} formReturn={formReturn} field={field} />
         ))}
       </ul>
-      <button type="button" onClick={handleAddButtonClick} className="mb-5">
-        추가하기
-      </button>
+      {fields.length < 5 && (
+        <button
+          type="button"
+          onClick={handleAddButtonClick}
+          className="mb-5 w-full bg-gray-100 rounded-md font-extrabold"
+        >
+          +
+        </button>
+      )}
     </div>
   );
 };
