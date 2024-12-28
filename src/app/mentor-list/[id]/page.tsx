@@ -23,7 +23,20 @@ const MentorDetail = () => {
 
       const menteeId = session.user.id; // 로그인된 유저의 ID
       console.log('로그인된 유저 ID (menteeId):', menteeId);
-      const mentorId = '2e0d26f7-29b3-4144-ad7b-f8ea9948653b'; // 현재 페이지의 멘토 ID 필요
+      const mentorId = '458ce309-aad8-44f6-a4a3-f54c23bd54f6'; // 현재 페이지의 멘토 ID 필요
+
+      // 이미 존재하는 채팅방 확인
+      const { data: existingChatroom } = await supabase
+        .from('chatrooms')
+        .select('*')
+        .eq('mentor_id', mentorId)
+        .eq('mentee_id', menteeId)
+        .single();
+
+      if (existingChatroom) {
+        alert('이미 존재하는 채팅방입니다.');
+        return;
+      }
 
       // Supabase에 채팅방 생성
       const { error: insertError } = await supabase
@@ -36,8 +49,6 @@ const MentorDetail = () => {
 
       // 채팅 모달 열기
       openModal();
-
-      alert('채팅방이 성공적으로 생성되었습니다!');
     } catch (error) {
       console.error('채팅방 생성 중 오류 발생:', error);
       alert('채팅방 생성에 실패했습니다.');
