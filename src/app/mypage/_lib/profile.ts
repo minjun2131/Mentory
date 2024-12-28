@@ -15,6 +15,18 @@ export const getAuthenticatedUser = async (): Promise<typeof user> => {
   return user;
 };
 
+
+export const signOutUser = async () => {
+  // useRouter 훅을 사용하여 라우터 객체를 가져옵니다.
+
+  const { error } = await supabase.auth.signOut(); // Supabase 로그아웃
+
+  if (error) {
+    console.error('로그아웃 오류:', error.message);
+    return;
+  }
+};
+
 type Users = Database['public']['Tables']['users']['Row'];
 export const getUserProfile = async (): Promise<Users | null> => {
   try {
@@ -36,6 +48,7 @@ export const getUserProfile = async (): Promise<Users | null> => {
     return null;
   }
 };
+
 
 export const updateUserProfileImage = async ({
   file,

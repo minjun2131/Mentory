@@ -5,6 +5,13 @@ import { useUserProfile } from './_hooks/useUserProfile';
 import Link from 'next/link';
 import ProfileImage from './_components/ProfileImage';
 import { useMentorProfile } from '@/hooks/useMentorProfile';
+import { signOutUser } from './_lib/profile';
+
+type Mentor = {
+  user_id: string;
+  introduction: string;
+  profile_image: string;
+};
 
 const MyPage = () => {
   const { data, isPending, isError } = useUserProfile();
@@ -22,9 +29,14 @@ const MyPage = () => {
     return <div>프로필 데이터가 존재하지 않습니다.</div>;
   }
   const user = Array.isArray(data) && data.length > 0 ? data[0] : null;
-  const mentorArray = Object.values(mentorData);
-  console.log(mentorArray);
-  // const isMentorAccout = mentorArray.map(mentor => mentor.user_id)
+  const mentorArray = Object.values<Mentor>(mentorData);
+  // 멘토 id 정리하기
+  const mentor = mentorArray.map((user) => user.user_id);
+
+  const handleLogout = async () => {
+    await signOutUser();
+    window.location.reload();
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white">
@@ -43,12 +55,17 @@ const MyPage = () => {
           프로필 사진 변경
         </Link>
         <button className="w-full py-3 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">수강 캘린더</button>
-        <Link
-          href="/mentors/new"
-          className="w-full py-3 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 inline-block"
-        >
-          멘토신청
-        </Link>
+        {user.id === mentor ? null : (
+          <Link
+            href="/mentors/new"
+            className="w-full py-3 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 inline-block"
+          >
+            멘토신청
+          </Link>
+        )}
+        <button onClick={handleLogout} className="w-full py-3 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">
+          로그아웃
+        </button>
       </div>
     </div>
   );
