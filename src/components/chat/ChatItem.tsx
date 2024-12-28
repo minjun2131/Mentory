@@ -22,11 +22,11 @@ export default function ChatItem({ userId, room, onSelectChatroom }: ChatItemPro
 	})
 
 	useEffect(() => {
-		const getChatinfo = async () => {
+		const getChatInfo = async () => {
 			const result = await getChatRoomName(room, userId)
 			setChat(result);
 		}
-		getChatinfo();
+		getChatInfo();
 	}, [room, userId])
 
 	const getChatRoomName = async (room: ChatRoom, userId: string) => {
@@ -49,7 +49,7 @@ export default function ChatItem({ userId, room, onSelectChatroom }: ChatItemPro
 		className="bg-gray-200 border border-gray-300 rounded-lg p-3 mb-2 cursor-pointer transition duration-300 hover:bg-gray-300 flex items-center"
 	>
 		{chat.profileImage && (
-			<Image src={chat.profileImage} alt="Profile" width={40} height={0} className="rounded-full mr-3" />
+			<Image src={chat.profileImage} alt="Profile" width={40} height={40} className="rounded-full mr-3" />
 		)}
 		<span>{chat.name}</span>
 	</li>

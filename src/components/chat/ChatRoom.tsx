@@ -119,7 +119,7 @@ const ChatRoom = ({ chatroomId, userId }: { chatroomId: string | null; userId: s
     <div className="p-4 flex flex-col h-full">
       <div className="flex-1 overflow-y-auto flex flex-col">
         {messages.map((message) => (
-          <div key={message.id} className="flex">
+          <div key={message.id} className="flex w-full">
             <div className="max-w-[60%]">
               {message.sender_id !== userId && otherUser?.profile_image ? (
                 <div className="flex">
@@ -140,7 +140,7 @@ const ChatRoom = ({ chatroomId, userId }: { chatroomId: string | null; userId: s
                   </div>
                 </div>
               ) : (
-                <div className="p-2 mb-3 rounded-lg w-auto break-all bg-blue-500 text-white">{message.content}</div>
+                  <div className="p-2 mb-3 rounded-lg w-auto break-all bg-blue-500 text-white">{message.content}</div>
               )}
             </div>
           </div>
