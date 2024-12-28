@@ -13,19 +13,64 @@ const ChatRoom = ({ chatroomId, userId }: { chatroomId: string | null; userId: s
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>('');
+  const [otherUser, setOtherUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    if (!chatroomId || !userId) return;
+
+    // 채팅방 참여자 정보 조회
+    const fetchParticipants = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('chatrooms')
+          .select('mentor_id, mentee_id')
+          .eq('id', chatroomId)
+          .single();
+
+        if (error || !data) {
+          console.error('채팅방 정보 불러오기 실패:', error);
+          return;
+        }
+
+        // 현재 유저와 상대방의 ID 구분
+        const otherUserId = data.mentor_id === userId ? data.mentee_id : data.mentor_id;
+
+        // 상대방 정보 가져오기
+        const { data: otherUserData, error: otherUserError } = await supabase
+          .from('users')
+          .select('*')
+          .eq('id', otherUserId)
+          .single();
+
+        if (otherUserError || !otherUserData) {
+          console.error('상대방 정보 불러오기 실패:', otherUserError);
+          return;
+        }
+
+        // 상태 업데이트
+        setOtherUser(otherUserData); // 상대방 정보 저장
+      } catch (err) {
+        console.error('참여자 정보 조회 실패:', err);
+      }
+    };
+
+    fetchParticipants();
+  }, [chatroomId, userId]);
 
   useEffect(() => {
     if (!chatroomId) return;
 
-    // 채팅방의 메시지 조회
+    // 채팅방 메시지 조회
     const fetchMessages = async () => {
       const { data, error } = await supabase.from('messages').select('*, users(*)').eq('chatroom_id', chatroomId);
+
       if (error) {
         console.error('메시지 불러오기 실패:', error);
       } else {
-        setMessages(data);
+        setMessages(data || []);
       }
     };
+
     fetchMessages();
 
     // Supabase Realtime 구독 설정
@@ -36,7 +81,7 @@ const ChatRoom = ({ chatroomId, userId }: { chatroomId: string | null; userId: s
         { event: 'INSERT', schema: 'public', table: 'messages', filter: `chatroom_id=eq.${chatroomId}` },
         (payload) => {
           const newMessage = payload.new as Message;
-          setMessages((prev) => [...prev, newMessage]); // 새 메시지 추가
+          setMessages((prev) => [...prev, newMessage]);
         }
       )
       .subscribe();
@@ -52,7 +97,7 @@ const ChatRoom = ({ chatroomId, userId }: { chatroomId: string | null; userId: s
 
     const { error } = await supabase.from('messages').insert({
       chatroom_id: chatroomId,
-      sender_id: userId, // 현재 로그인한 사용자 ID
+      sender_id: userId,
       content: message
     });
 
@@ -76,26 +121,26 @@ const ChatRoom = ({ chatroomId, userId }: { chatroomId: string | null; userId: s
         {messages.map((message) => (
           <div key={message.id} className="flex">
             <div className="max-w-[60%]">
-              {message.sender_id !== userId && message.users.profile_image ? (
+              {message.sender_id !== userId && otherUser?.profile_image ? (
                 <div className="flex">
                   <div className="mr-3">
                     <Image
-                      src={message.users.profile_image}
+                      src={otherUser.profile_image}
                       alt="Profile"
                       width={40}
                       height={40}
-                      className="rounded-full  object-cover max-w-[40px] min-w-[40px]"
+                      className="rounded-full object-cover max-w-[40px] min-w-[40px]"
                     />
                   </div>
-                  <div className=" w-full ">
-                    <p>{message.sender_id === userId ? null : `${message.users.name}`}</p>
-                    <div className={`p-2 mb-3 rounded-lg  w-auto break-all bg-blue-100 text-black   `}>
+                  <div className="w-full">
+                    <p>{otherUser.name || '알 수 없는 사용자'}</p>
+                    <div className={`p-2 mb-3 rounded-lg w-auto break-all bg-blue-100 text-black`}>
                       {message.content}
                     </div>
                   </div>
                 </div>
               ) : (
-                <div className={`p-2 mb-3 rounded-lg w-auto break-all bg-blue-500 text-white`}>{message.content}</div>
+                <div className="p-2 mb-3 rounded-lg w-auto break-all bg-blue-500 text-white">{message.content}</div>
               )}
             </div>
           </div>
