@@ -1,5 +1,6 @@
 'use client';
 
+import LoadingSpinner from '@/components/LoadingAnimation';
 import { useMentorProfile } from '@/hooks/useMentorProfile';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -9,7 +10,7 @@ const Mentors = () => {
   const { data, isPending, isError } = useMentorProfile();
 
   if (isPending) {
-    return <div>로딩 중...</div>;
+    return <LoadingSpinner />;
   }
 
   if (isError) {
@@ -28,12 +29,15 @@ const Mentors = () => {
   return (
     <div className="bg-gray-100 min-h-screen">
       {/* 배경 이미지 섹션 */}
-      <div
-        className="h-64 bg-cover bg-center"
-        style={{ backgroundImage: "url('/your-image.jpg')" }} // 이미지 경로 수정 필요
-      >
-        <div className="h-full bg-black bg-opacity-50 flex items-center justify-center">
-          <h1 className="text-white text-3xl font-bold">Our Mentors</h1>
+      <div className="h-[500px] bg-cover bg-center" style={{ backgroundImage: "url('/your-image.jpg')" }}>
+        <div className="h-full bg-black bg-opacity-50 flex items-center justify-center overflow-hidden">
+          <Image
+            src="/images/hero-image.png"
+            alt="Hero-Image"
+            width={1920}
+            height={300}
+            className="w-full h-[30vh] sm:h-[500px] object-cover filter brightness-90 blur-[1px] grayscale"
+          />
         </div>
       </div>
 
