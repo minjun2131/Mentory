@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUpdateProfileImage } from '../_hooks/useUpdateProfileImage';
 import { useUserProfile } from '../_hooks/useUserProfile';
+import LoadingSpinner from '@/components/LoadingAnimation';
+import Image from 'next/image';
 
 const EditProfileModal = () => {
   const router = useRouter();
@@ -37,7 +39,7 @@ const EditProfileModal = () => {
       { file, name },
       {
         onSuccess: () => {
-          router.back(); // 성공 시 모달 닫기
+          router.back();
         },
         onError: (error) => {
           console.error('업데이트 실패:', error);
@@ -51,7 +53,7 @@ const EditProfileModal = () => {
   };
 
   if (isPending) {
-    return <div>로딩 중...</div>;
+    return <LoadingSpinner />;
   }
 
   if (isError || !profileData) {
@@ -73,8 +75,8 @@ const EditProfileModal = () => {
         <div className="px-6 py-6 space-y-6">
           {/* 프로필 이미지 */}
           <div className="flex flex-col items-center space-y-4">
-            <div className="w-28 h-28 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
-              <img src={preview} alt="Profile" className="w-full h-full object-cover" />
+            <div className="relative w-64 h-64 rounded-full overflow-hidden">
+              <Image src={preview} alt="Profile" className="object-cover" fill sizes="100vw" />
             </div>
             <input type="file" accept="image/*" onChange={handleFileChange} className="hidden" id="file-input" />
             <label

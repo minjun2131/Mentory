@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { signInWithGithub } from '@/utils/supabase/auth';
+import Swal from 'sweetalert2';
 
 const GitHubLoginButton: React.FC = () => {
   const handleGitHubLogin = async () => {
@@ -9,7 +10,11 @@ const GitHubLoginButton: React.FC = () => {
       await signInWithGithub();
     } catch (error) {
       console.error('GitHub 로그인 실패:', error);
-      alert('GitHub 로그인에 실패했습니다.');
+      Swal.fire({
+        icon: 'error',
+        title: 'GitHub 로그인에 실패했습니다.',
+        text: '다시 시도하거나 다른 방법으로 로그인해 주세요.'
+      });
     }
   };
 

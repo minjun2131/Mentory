@@ -4,6 +4,7 @@ import { createClient } from '@/utils/supabase/client';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import Swal from 'sweetalert2';
 
 export const HeroSection: React.FC = () => {
   const [searchHashtag, setSearchHashtag] = useState('');
@@ -31,7 +32,11 @@ export const HeroSection: React.FC = () => {
     if (mentorId && mentorId.length > 0) {
       router.push(`/mentor-list?mentorId=${encodeURIComponent(JSON.stringify(mentorId))}`);
     } else {
-      alert('관련된 멘토를 찾을 수 없습니다.');
+      Swal.fire({
+        icon: 'warning',
+        title: '관련된 멘토를 찾을 수 없습니다.',
+        text: '다시 시도하거나 다른 멘토를 검색해 주세요.'
+      });
     }
   };
 

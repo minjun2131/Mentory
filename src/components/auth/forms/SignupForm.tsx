@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import { createClient } from '@/utils/supabase/client';
 import { useModalStore } from '@/store/modalStore';
+import Swal from 'sweetalert2';
 
 interface SignupInput {
   email: string;
@@ -36,11 +37,19 @@ const SignupForm: React.FC = () => {
         }
       });
       if (error) throw new Error(error.message);
-      alert('회원가입에 성공했습니다.');
+      Swal.fire({
+        icon: 'success',
+        title: '회원가입에 성공했습니다!',
+        text: '환영합니다. 이제 로그인할 수 있습니다.',
+      });
       open('login');
     } catch (error: unknown) {
       if (error instanceof Error) {
-        alert('에러가 발생했습니다.');
+        Swal.fire({
+          icon: 'error',
+          title: '에러가 발생했습니다.',
+          text: '잠시 후 다시 시도해 주세요.',
+        });
       }
     }
   };

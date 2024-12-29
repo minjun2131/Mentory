@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import { createClient } from '@/utils/supabase/client';
 import { useModalStore } from '@/store/modalStore';
+import Swal from 'sweetalert2';
 
 interface LoginInput {
   email: string;
@@ -27,7 +28,11 @@ const LoginForm: React.FC = () => {
       close();
     } catch (error) {
       if (error instanceof Error) {
-        alert('로그인 중 오류가 발생했습니다.');
+        Swal.fire({
+          icon: 'error',
+          title: '로그인 중 오류가 발생했습니다.',
+          text: '잠시 후 다시 시도해 주세요.',
+        });
       }
     }
   };
