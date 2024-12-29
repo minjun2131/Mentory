@@ -85,7 +85,7 @@ const Header = () => {
           ) : isLoggedIn ? (
             <Link href="/mypage">
               <Image
-                src={userImage.profile_image || '/images/profile.png'}
+                src={userImage?.profile_image || '/images/profile.png'}
                 width={40}
                 height={40}
                 alt="profile_image"
