@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useModalStore } from '@/store/modalStore';
 import { createClient } from '@/utils/supabase/client';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useUserProfile } from '@/app/mypage/_hooks/useUserProfile';
 
 interface UserProfile {
   isLoggedIn: boolean;
@@ -21,53 +22,54 @@ const fetchUserProfile = async (): Promise<UserProfile> => {
 
     if (!user) return { isLoggedIn: false, profileImage: null };
 
-    const { data: profileData } = await supabase
-      .from('users')
-      .select('profile_image')
-      .eq('id', user.id)
-      .single();
+    const { data: profileData } = await supabase.from('users').select('profile_image').eq('id', user.id).single();
 
     return { isLoggedIn: true, profileImage: profileData?.profile_image || null };
   } catch (error) {
-    console.error('오류가 발생했습니다.',error);
+    console.error('오류가 발생했습니다.', error);
     return { isLoggedIn: false, profileImage: null };
   }
 };
 
 const Header = () => {
   const { open } = useModalStore();
-  const queryClient = useQueryClient()
-  const supabase = createClient()
+  const queryClient = useQueryClient();
+  const supabase = createClient();
 
-useEffect(() => {
-  const {data:{subscription}} = supabase.auth.onAuthStateChange(() => {
-    queryClient.invalidateQueries({queryKey: ['userProfile']})
-  })
+  useEffect(() => {
+    const {
+      data: { subscription }
+    } = supabase.auth.onAuthStateChange(() => {
+      queryClient.invalidateQueries({ queryKey: ['userProfile'] });
+    });
 
-  return () => {
-    subscription.unsubscribe()
-  }
-},[queryClient,supabase])
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [queryClient, supabase]);
 
-  const { data, isError } = useQuery<UserProfile, Error>({
+  const { data, isPending, isError } = useQuery<UserProfile, Error>({
     queryKey: ['userProfile'],
     queryFn: fetchUserProfile
   });
 
+  const { data: profileImage, isPending: isProfilePending } = useUserProfile();
+
   const handleLogin = () => {
-    open('login')
-  queryClient.invalidateQueries({queryKey: ['userProfile']})
-  }
+    open('login');
+    queryClient.invalidateQueries({ queryKey: ['userProfile'] });
+  };
 
   const handleSignup = () => {
-    open('signup')
+    open('signup');
 
-    queryClient.invalidateQueries({queryKey: ['userProfile']})
-  }
+    queryClient.invalidateQueries({ queryKey: ['userProfile'] });
+  };
 
+  const userImage = Array.isArray(profileImage) && profileImage.length > 0 ? profileImage[0] : null;
   if (isError) return <div>shwoing an error</div>;
 
-  const { isLoggedIn, profileImage } = data || { isLoggedIn: false, profileImage: null };
+  const { isLoggedIn } = data || { isLoggedIn: false };
 
   return (
     <header className="sticky top-0 z-50 items-center bg-white shadow py-4">
@@ -78,10 +80,12 @@ useEffect(() => {
           </Link>
         </div>
         <div className="flex items-center space-x-4">
-          {isLoggedIn ? (
+          {isPending || isProfilePending ? (
+            <span className="text-gray-500">정보를 가져오는 중입니다...</span>
+          ) : isLoggedIn ? (
             <Link href="/mypage">
               <Image
-                src={profileImage || '/images/profile.png'}
+                src={userImage.profile_image || '/images/profile.png'}
                 width={40}
                 height={40}
                 alt="profile_image"

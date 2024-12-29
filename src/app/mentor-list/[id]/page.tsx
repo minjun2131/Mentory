@@ -1,14 +1,17 @@
 'use client';
 
 import ChatModal from '@/components/chat/ChatModal';
+import LoadingSpinner from '@/components/LoadingAnimation';
 import { useMentorCareers } from '@/hooks/useMentorCareers';
 import { useMentorInfo } from '@/hooks/useMentorInfo';
+import { useUserInfo } from '@/hooks/useUserInfo';
 import { getAuthenticatedUser } from '@/lib/profile';
 import useChatModalStore from '@/store/chatModalStore';
 import { useModalStore } from '@/store/modalStore';
 import { createClient } from '@/utils/supabase/client';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
+import Swal from 'sweetalert2';
 
 const MentorDetail = () => {
   const supabase = createClient();
@@ -48,7 +51,11 @@ const MentorDetail = () => {
       } = await supabase.auth.getSession();
 
       if (error || !session || !session.user) {
-        alert('로그인 상태가 아닙니다.');
+        Swal.fire({
+          icon: 'error',
+          title: '로그인 상태가 아닙니다.',
+          text: '로그인 후 이용해주세요.'
+        });
         return;
       }
 
@@ -64,7 +71,11 @@ const MentorDetail = () => {
         .single();
 
       if (existingChatroom) {
-        alert('이미 존재하는 채팅방입니다.');
+        Swal.fire({
+          icon: 'warning',
+          title: '이미 존재하는 채팅방입니다.',
+          text: '다른 이름의 채팅방을 시도해주세요.'
+        });
         return;
       }
 
@@ -81,16 +92,20 @@ const MentorDetail = () => {
       openModal();
     } catch (error) {
       console.error('채팅방 생성 중 오류 발생:', error);
-      alert('채팅방 생성에 실패했습니다.');
+      Swal.fire({
+        icon: 'error',
+        title: '채팅방 생성에 실패했습니다.',
+        text: '다시 시도해주세요.'
+      });
     }
   };
 
   const { data: mentorInfo, isPending, isError } = useMentorInfo();
   const { data: mentorCareer, isPending: isCareerPending } = useMentorCareers();
-  const { data: userInfo, isPending: isUserPending } = useMentorInfo();
+  const { data: userInfo, isPending: isUserPending } = useUserInfo();
 
   if (isPending || isCareerPending || isUserPending) {
-    return <div>로딩 중...</div>;
+    return <LoadingSpinner/>;
   }
 
   if (isError) {
@@ -100,6 +115,7 @@ const MentorDetail = () => {
   if (!mentorInfo) {
     return <div>프로필 데이터가 존재하지 않습니다.</div>;
   }
+  const imageUrl = mentorInfo.profile_image || '/default-profile-image.jpg';
 
   const careers = Array.isArray(mentorCareer) && mentorCareer.length > 0 ? mentorCareer[0] : null;
   return (
@@ -107,7 +123,7 @@ const MentorDetail = () => {
       {/* Header Section */}
       <div className="flex items-center space-x-6">
         <Image
-          src={mentorInfo.profile_image || '/default-image.jpg'}
+          src={imageUrl || '/default-image.jpg'}
           alt="Mentor_Image"
           width={96}
           height={96}

@@ -1,4 +1,5 @@
-import { getUserDetail } from '@/lib/profile';
+
+import { getMentorDetail } from '@/lib/mentorProfile';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 
@@ -8,7 +9,7 @@ export const useMentorInfo = () => {
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['mentor', mentorId],
-    queryFn: () => (mentorId ? getUserDetail(mentorId) : Promise.reject('No mentorId')),
+    queryFn: () => (mentorId ? getMentorDetail(mentorId) : Promise.reject('No mentorId')),
     enabled: !!mentorId,
     staleTime: 1000 * 60 * 5
   });

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import ProfileImage from './_components/ProfileImage';
 import { useMentorProfile } from '@/hooks/useMentorProfile';
 import { signOutUser } from './_lib/profile';
+import LoadingSpinner from '@/components/LoadingAnimation';
 
 type Mentor = {
   user_id: string;
@@ -18,7 +19,7 @@ const MyPage = () => {
   const { data: mentorData } = useMentorProfile();
 
   if (isPending) {
-    return <div>로딩 중...</div>;
+    return <LoadingSpinner />;
   }
 
   if (isError) {
@@ -52,7 +53,6 @@ const MyPage = () => {
         >
           프로필 사진 변경
         </Link>
-        <button className="w-full py-3 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">수강 캘린더</button>
         {mentor.includes(user.id) ? null : (
           <Link
             href="/mentors/new"
