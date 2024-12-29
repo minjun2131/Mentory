@@ -34,13 +34,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${seoulHangang.variable} antialiased`}>
-
         <Providers>
-        <Header />
+          <Header />
           <main>{children}</main>
+          <LoginModal />
+          <SignupModal />
         </Providers>
-        <LoginModal />
-        <SignupModal />
         <Footer />
       </body>
     </html>

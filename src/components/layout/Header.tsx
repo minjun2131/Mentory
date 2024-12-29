@@ -57,13 +57,10 @@ const Header = () => {
 
   const handleLogin = () => {
     open('login');
-    queryClient.invalidateQueries({ queryKey: ['userProfile'] });
   };
 
   const handleSignup = () => {
     open('signup');
-
-    queryClient.invalidateQueries({ queryKey: ['userProfile'] });
   };
 
   const userImage = Array.isArray(profileImage) && profileImage.length > 0 ? profileImage[0] : null;
