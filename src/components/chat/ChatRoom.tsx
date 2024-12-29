@@ -61,7 +61,11 @@ const ChatRoom = ({ chatroomId, userId }: { chatroomId: string | null; userId: s
     if (!chatroomId) return;
 
     const fetchMessages = async () => {
-      const { data, error } = await supabase.from('messages').select('*, users(*)').eq('chatroom_id', chatroomId);
+      const { data, error } = await supabase
+        .from('messages')
+        .select('*, users(*)')
+        .eq('chatroom_id', chatroomId)
+        .order('created_at', { ascending: true });
 
       if (error) {
         console.error('메시지 불러오기 실패:', error);
@@ -79,7 +83,9 @@ const ChatRoom = ({ chatroomId, userId }: { chatroomId: string | null; userId: s
         { event: 'INSERT', schema: 'public', table: 'messages', filter: `chatroom_id=eq.${chatroomId}` },
         (payload) => {
           const newMessage = payload.new as Message;
-          setMessages((prev) => [...prev, newMessage]);
+          setMessages((prev) =>
+            [...prev, newMessage].sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
+          );
         }
       )
       .subscribe();
