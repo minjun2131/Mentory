@@ -1,3 +1,4 @@
+
 import { createClient } from '@/utils/supabase/client';
 
 const supabase = createClient();
@@ -24,6 +25,27 @@ export const getUserProfile = async () => {
       throw new Error(`프로필 정보를 가져오는 데 실패하였습니다. ${userProfileError.message}`);
     }
     return userProfile;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+export const getUserDetail = async (userId: string) => {
+  try {
+    const { data: userDetail, error: userDetailError } = await supabase
+      .from('users')
+      .select('*')
+      .eq('id', userId)
+      .single();
+    if (!userDetail) {
+      throw new Error('멘토 데이터가 존재하지 않습니다.');
+    }
+
+    if (userDetailError) {
+      throw new Error(`프로필 정보를 가져오는 데 실패하였습니다. ${userDetailError}`);
+    }
+    return userDetail;
   } catch (error) {
     console.log(error);
     return null;
