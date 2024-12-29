@@ -1,41 +1,80 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useModalStore } from '@/store/modalStore';
 import { createClient } from '@/utils/supabase/client';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+
+interface UserProfile {
+  isLoggedIn: boolean;
+  profileImage: string | null;
+}
+
+const fetchUserProfile = async (): Promise<UserProfile> => {
+  const supabase = createClient();
+  try {
+    const {
+      data: { user }
+    } = await supabase.auth.getUser();
+
+    if (!user) return { isLoggedIn: false, profileImage: null };
+
+    const { data: profileData, error } = await supabase
+      .from('users')
+      .select('profile_image')
+      .eq('id', user.id)
+      .single();
+
+    if (error) {
+      console.log(error);
+      return { isLoggedIn: true, profileImage: null };
+    }
+
+    return { isLoggedIn: true, profileImage: profileData?.profile_image || null };
+  } catch (error) {
+    console.error('오류가 발생했습니다.');
+    return { isLoggedIn: false, profileImage: null };
+  }
+};
 
 const Header = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [profileImage, setProfileImage] = useState<string | null>(null);
   const { open } = useModalStore();
+  const queryClient = useQueryClient()
+  const supabase = createClient()
 
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      const supabase = createClient();
-      const {
-        data: { user }
-      } = await supabase.auth.getUser();
+useEffect(() => {
+  const {data:{subscription}} = supabase.auth.onAuthStateChange(() => {
+    queryClient.invalidateQueries({queryKey: ['userProfile']})
+  })
 
-      if (user) {
-        setIsLoggedIn(true);
-        const { data: profileData, error } = await supabase
-          .from('users')
-          .select('profile_image')
-          .eq('id', user.id)
-          .single();
+  return () => {
+    subscription.unsubscribe()
+  }
+},[queryClient,supabase])
 
-        if (!error) {
-          setProfileImage(profileData?.profile_image || null);
-        }
-      } else {
-        setIsLoggedIn(false);
-      }
-    };
+  const { data, isPending, isError } = useQuery<UserProfile, Error>({
+    queryKey: ['userProfile'],
+    queryFn: fetchUserProfile
+  });
 
-    fetchUserProfile();
-  }, []);
+  const handleLogin = () => {
+    open('login')
+  queryClient.invalidateQueries({queryKey: ['userProfile']})
+  }
+
+  const handleSignup = () => {
+    open('signup')
+
+    queryClient.invalidateQueries({queryKey: ['userProfile']})
+  }
+
+  if (isPending) return <div>Loading...</div>;
+
+  if (isError) return <div>shwoing an error</div>;
+
+  const { isLoggedIn, profileImage } = data || { isLoggedIn: false, profileImage: null };
 
   return (
     <header className="sticky top-0 z-50 items-center bg-white shadow py-4">

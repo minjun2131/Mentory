@@ -34,9 +34,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${seoulHangang.variable} antialiased`}>
-        <Header />
 
         <Providers>
+        <Header />
           <main>{children}</main>
         </Providers>
         <LoginModal />
