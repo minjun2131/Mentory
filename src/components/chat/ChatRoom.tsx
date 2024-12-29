@@ -64,7 +64,7 @@ const ChatRoom = ({ chatroomId, userId }: { chatroomId: string | null; userId: s
 
     // 채팅방 메시지 조회
     const fetchMessages = async () => {
-      const { data, error } = await supabase.from('messages').select('*, users(*)').eq('chatroom_id', chatroomId);
+      const { data, error } = await supabase.from('messages').select('*, users(*)').eq('chatroom_id', chatroomId).order('created_at', {ascending: true});
 
       if (error) {
         console.error('메시지 불러오기 실패:', error);

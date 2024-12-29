@@ -20,7 +20,7 @@ const Mentors = () => {
     return <div>프로필 데이터가 존재하지 않습니다.</div>;
   }
   const mentors = Array.isArray(data) && data.length > 0 ? data : [];
-  console.log(mentors);
+    console.log(mentors);
   if (!mentors) {
     return <div>멘토 데이터를 가져올 수 없습니다.</div>;
   }

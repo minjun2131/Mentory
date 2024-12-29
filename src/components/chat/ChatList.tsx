@@ -54,14 +54,12 @@ const ChatList = ({ onSelectChatroom }: { onSelectChatroom: (id: string, userId:
 
     fetchChatRooms();
   }, [supabase]);
-  
+
   return (
     <div className="p-4">
       <ul>
         {chatRooms.map((room) => {
-          return (
-            <ChatItem key={room.id} userId={userId || ""} room={room} onSelectChatroom={onSelectChatroom}/>
-          )
+          return <ChatItem key={room.id} userId={userId || ''} room={room} onSelectChatroom={onSelectChatroom} />;
         })}
       </ul>
     </div>
