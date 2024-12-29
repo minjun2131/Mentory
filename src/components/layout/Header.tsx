@@ -21,20 +21,15 @@ const fetchUserProfile = async (): Promise<UserProfile> => {
 
     if (!user) return { isLoggedIn: false, profileImage: null };
 
-    const { data: profileData, error } = await supabase
+    const { data: profileData } = await supabase
       .from('users')
       .select('profile_image')
       .eq('id', user.id)
       .single();
 
-    if (error) {
-      console.log(error);
-      return { isLoggedIn: true, profileImage: null };
-    }
-
     return { isLoggedIn: true, profileImage: profileData?.profile_image || null };
   } catch (error) {
-    console.error('오류가 발생했습니다.');
+    console.error('오류가 발생했습니다.',error);
     return { isLoggedIn: false, profileImage: null };
   }
 };
@@ -98,14 +93,14 @@ useEffect(() => {
           ) : (
             <>
               <button
-                onClick={() => open('login')}
+                onClick={handleLogin}
                 className="bg-white text-black px-4 py-2 rounded hover:bg-black hover:text-white transition duration-300"
               >
                 Log In
               </button>
 
               <button
-                onClick={() => open('signup')}
+                onClick={handleSignup}
                 className="bg-black text-white px-4 py-2 rounded hover:bg-white hover:text-black transition duration-300"
               >
                 Sign Up
