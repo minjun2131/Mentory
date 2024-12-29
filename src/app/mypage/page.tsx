@@ -42,7 +42,7 @@ const MyPage = () => {
       {/* 프로필 아이콘 */}
       <div className="flex flex-col items-center mb-6">
         <ProfileImage user={user} />
-        <h1 className="mt-4 text-xl font-semibold text-gray-800">{user.name}</h1>
+        <h1 className="mt-4 text-xl font-semibold text-gray-800">{user?.name}</h1>
       </div>
 
       {/* 버튼 그룹 */}
