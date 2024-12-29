@@ -4,11 +4,14 @@ import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import ChatList from './ChatList';
 import ChatRoom from './ChatRoom';
-import useModalStore from '@/store/chatModalStore';
 import Image from 'next/image';
+import useChatModalStore from '@/store/chatModalStore';
+import { useModalStore } from '@/store/modalStore';
+import { getAuthenticatedUser } from '@/lib/profile';
 
 const ChatModal = () => {
-  const { isOpen, openModal, closeModal } = useModalStore();
+  const { isOpen, openModal, closeModal } = useChatModalStore();
+  const { open } = useModalStore();
   const [activeTab, setActiveTab] = useState<'list' | 'room'>('list');
   const [activeChatroomId, setActiveChatroomId] = useState<string | null>(null);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
@@ -18,12 +21,26 @@ const ChatModal = () => {
     setCurrentUserId(userId); // 현재 사용자 ID
     setActiveTab('room'); // 탭을 'room'으로 전환
   };
+
+  const handleOpenChat = async () => {
+    try {
+      const user = await getAuthenticatedUser();
+      if (!user) {
+        open('login');
+        return;
+      }
+      openModal();
+    } catch (error) {
+      console.log('로그인 확인 중 오류:', error);
+      open('login');
+    }
+  };
   return (
     <>
       {/* 플로팅 채팅 버튼 */}
       <button
         className="fixed bottom-5 right-5 p-4 focus:outline-none"
-        onClick={openModal} // 모달 열기
+        onClick={handleOpenChat} // 모달 열기
       >
         <Image src="/images/chat.png" alt="Mentory_Chat_Logo" width={60} height={60} className="cursor-pointer" />
       </button>
