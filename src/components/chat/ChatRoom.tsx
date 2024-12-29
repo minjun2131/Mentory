@@ -55,7 +55,7 @@ const ChatRoom = ({ chatroomId, userId }: { chatroomId: string | null; userId: s
     };
 
     fetchParticipants();
-  }, [chatroomId, userId]);
+  }, [supabase, chatroomId, userId]);
 
   useEffect(() => {
     if (!chatroomId) return;
@@ -93,7 +93,7 @@ const ChatRoom = ({ chatroomId, userId }: { chatroomId: string | null; userId: s
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [chatroomId]);
+  }, [supabase, chatroomId]);
 
   // messages 변경 시 스크롤 이동
   useEffect(() => {
