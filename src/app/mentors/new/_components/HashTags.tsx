@@ -1,15 +1,13 @@
 import { Input } from '@/components/ui/input';
 import React, { useState } from 'react';
-import MoveActions from './MoveActions';
 import { useFieldArray, UseFormReturn } from 'react-hook-form';
+import StepTitle from './StepTitle';
 
 interface HashTagsProps {
-  onNext: () => void;
-  onPrev: () => void;
   formReturn: UseFormReturn;
 }
 
-const HashTags = ({ onNext, onPrev, formReturn }: HashTagsProps) => {
+const HashTags = ({ formReturn }: HashTagsProps) => {
   const [tagName, setTagName] = useState('');
   const { getValues, control } = formReturn;
   const name = 'hashTags';
@@ -21,20 +19,21 @@ const HashTags = ({ onNext, onPrev, formReturn }: HashTagsProps) => {
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <h2 className="text-2xl font-bold mb-12 self-start">멘토님을 나타내는 태그를 입력해주세요.</h2>
-      <div className="flex">
-        <div>
-          <Input value={tagName} onChange={(e) => setTagName(e.target.value)} />
-        </div>
-        <button onClick={handleAddButtonClick}>추가</button>
+    <div className="flex flex-col items-center min-h-[425px]">
+      <StepTitle>멘토님을 나타내는 태그를 입력해주세요</StepTitle>
+      <div className="flex mb-10">
+        <Input type="text" value={tagName} onChange={(e) => setTagName(e.target.value)} className="mr-5" />
+        <button onClick={handleAddButtonClick} className="w-20 text-blue-500 bg-gray-100 rounded-md">
+          추가
+        </button>
       </div>
-      <div className='flex gap-5'>
+      <div className="flex items-center justify-center flex-wrap gap-5 w-full h-48 p-5 rounded-md bg-gray-100 text-blue-500 text-2xl">
         {fields.map((field, idx) => (
-          <div key={field.id}>{'#' + tags[idx]}</div>
+          <div className="p-2 bg-white rounded-md" key={field.id}>
+            {'#' + tags[idx]}
+          </div>
         ))}
       </div>
-      <MoveActions onNext={onNext} onPrev={onPrev} name={name} />
     </div>
   );
 };

@@ -12,10 +12,10 @@ interface AddParams extends Partial<MentorInsertData> {
   supabase: SupabaseClient;
 }
 
-export const registerMentor = async ({ introduction, profileImg, hashTags, careers }: MentorInsertData) => {
+export const registerMentor = async ({ introduction, profileImage, hashTags, careers }: MentorInsertData) => {
   const supabase = await createClient();
   const { data: authData } = await supabase.auth.getUser();
-  const mentor = await addMentor({ introduction, profileImg, authData, supabase });
+  const mentor = await addMentor({ introduction, profileImage, authData, supabase });
   await addCareers({ careers, supabase, mentor });
   await addHashTags({ hashTags, supabase, mentor });
 };
@@ -24,11 +24,10 @@ interface AddMentorParams extends AddParams {
   authData: { user: User | null };
 }
 
-const addMentor = async ({ introduction, profileImg, authData, supabase }: AddMentorParams): Promise<Mentor> => {
-  console.log('🚀 ~ registerMentor ~ profileImg:', profileImg);
+const addMentor = async ({ introduction, profileImage, authData, supabase }: AddMentorParams): Promise<Mentor> => {
   const { data: mentor, error } = await supabase
     .from('mentors')
-    .insert({ introduction, user_id: authData.user?.id })
+    .insert(snakeCase({ introduction, profileImage, user_id: authData.user?.id }))
     .select()
     .single();
   if (error) throw error;
