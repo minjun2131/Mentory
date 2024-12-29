@@ -24,7 +24,6 @@ const Introduction = ({ formReturn }: IntroductionProps) => {
         })}
       />
       <ErrorMessage>{errors[name]?.message as string}</ErrorMessage>
-      {/* {errors[name]?.message && <p>{ as string}</p>} */}
     </div>
   );
 };
