@@ -1,31 +1,29 @@
 import { Textarea } from '@/components/ui/textarea';
 import React from 'react';
 import { UseFormReturn } from 'react-hook-form';
-import MoveActions from './MoveActions';
+import StepTitle from './StepTitle';
+import ErrorMessage from '@/components/ErrorMessage';
 
 interface IntroductionProps {
-  onNext: () => void;
-  onPrev: () => void;
   formReturn: UseFormReturn;
 }
-const Introduction = ({ onNext, onPrev, formReturn }: IntroductionProps) => {
+const Introduction = ({ formReturn }: IntroductionProps) => {
   const {
     register,
     formState: { errors }
   } = formReturn;
-
   const name = 'introduction';
 
   return (
-    <div className="flex flex-col items-center">
-      <h2 className="text-2xl font-bold mb-12 self-start">간단한 소개를 입력해주세요.</h2>
+    <div className="flex flex-col items-center h-[425px]">
+      <StepTitle>간단한 소개를 입력해주세요</StepTitle>
       <Textarea
+        className="h-[250px] mb-5"
         {...register(name, {
-          // required: '필수 입력 항목입니다.'
+          required: '필수 입력 항목입니다.'
         })}
       />
-      {errors[name]?.message && <p>{errors[name].message as string}</p>}
-      <MoveActions onNext={onNext} onPrev={onPrev} name={name} />
+      <ErrorMessage>{errors[name]?.message as string}</ErrorMessage>
     </div>
   );
 };
