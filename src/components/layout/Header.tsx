@@ -49,7 +49,7 @@ useEffect(() => {
   }
 },[queryClient,supabase])
 
-  const { data, isPending, isError } = useQuery<UserProfile, Error>({
+  const { data, isError } = useQuery<UserProfile, Error>({
     queryKey: ['userProfile'],
     queryFn: fetchUserProfile
   });
@@ -64,8 +64,6 @@ useEffect(() => {
 
     queryClient.invalidateQueries({queryKey: ['userProfile']})
   }
-
-  if (isPending) return <div>Loading...</div>;
 
   if (isError) return <div>shwoing an error</div>;
 
