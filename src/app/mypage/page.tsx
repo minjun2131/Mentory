@@ -32,12 +32,10 @@ const MyPage = () => {
   const mentorArray = Object.values<Mentor>(mentorData);
   // 멘토 id 정리하기
   const mentor = mentorArray.map((user) => user.user_id);
-
   const handleLogout = async () => {
     await signOutUser();
-    window.location.reload();
+    window.location.href = '/';
   };
-
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white">
       {/* 프로필 아이콘 */}
@@ -55,7 +53,7 @@ const MyPage = () => {
           프로필 사진 변경
         </Link>
         <button className="w-full py-3 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">수강 캘린더</button>
-        {user.id === mentor ? null : (
+        {mentor.includes(user.id) ? null : (
           <Link
             href="/mentors/new"
             className="w-full py-3 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 inline-block"
