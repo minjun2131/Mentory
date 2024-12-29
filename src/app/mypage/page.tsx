@@ -53,7 +53,7 @@ const MyPage = () => {
         >
           프로필 사진 변경
         </Link>
-        {mentor.includes(user.id) ? null : (
+        {mentor.includes(user?.id) ? null : (
           <Link
             href="/mentors/new"
             className="w-full py-3 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 inline-block"
