@@ -36,14 +36,14 @@ export const HeroSection: React.FC = () => {
   };
 
   return (
-    <section className="relative py-12">
+    <section className="relative pb-12">
       <div className="w-full">
         <Image
           src="/images/hero-image.png"
           alt="Hero-Image"
           width={1920}
           height={300}
-          className="w-full h-[30vh] sm:h-[300px] object-cover filter brightness-90 blur-[1px] grayscale"
+          className="w-full h-[30vh] sm:h-[500px] object-cover filter brightness-90 blur-[1px] grayscale"
         />
         <div className="absolute inset-0 flex justify-center items-center" style={{ top: '40%' }}>
           <div className="w-[90%] max-w-xl bg-white/70 backdrop-blur-md rounded-full shadow-lg flex items-center p-3">
