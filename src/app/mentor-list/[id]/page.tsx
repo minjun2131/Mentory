@@ -14,7 +14,7 @@ const MentorDetail = () => {
   const supabase = createClient();
   const params = useParams();
   const { openModal } = useChatModalStore();
-  const { open } = useModalStore(); 
+  const { open } = useModalStore();
 
   const checkAuthentication = async () => {
     try {
@@ -27,18 +27,18 @@ const MentorDetail = () => {
 
       return true;
     } catch (error) {
-      console.error('로그인 오류:',error);
+      console.error('로그인 오류:', error);
       open('login');
       return false;
     }
-  }
+  };
 
   const handleCreateChatroom = async () => {
     try {
       const isAuthenticated = await checkAuthentication();
 
       if (!isAuthenticated) {
-        return ; // 로그인되지 않았으면 진행하지 않고 return
+        return; // 로그인되지 않았으면 진행하지 않고 return
       }
 
       // 로그인한 유저의 세션 정보 가져오기
@@ -87,8 +87,9 @@ const MentorDetail = () => {
 
   const { data: mentorInfo, isPending, isError } = useMentorInfo();
   const { data: mentorCareer, isPending: isCareerPending } = useMentorCareers();
+  const { data: userInfo, isPending: isUserPending } = useMentorInfo();
 
-  if (isPending || isCareerPending) {
+  if (isPending || isCareerPending || isUserPending) {
     return <div>로딩 중...</div>;
   }
 
@@ -99,9 +100,8 @@ const MentorDetail = () => {
   if (!mentorInfo) {
     return <div>프로필 데이터가 존재하지 않습니다.</div>;
   }
-  console.log(mentorInfo);
+
   const careers = Array.isArray(mentorCareer) && mentorCareer.length > 0 ? mentorCareer[0] : null;
-  console.log(careers);
   return (
     <div className="max-w-4xl mx-auto p-8 pt-[100px] pb-[100px]">
       {/* Header Section */}
@@ -116,7 +116,7 @@ const MentorDetail = () => {
 
         <div className="w-1/2">
           <h1 className="text-2xl font-bold">
-            문다슬 <span>Mentor</span>
+            {userInfo.name} <span>Mentor</span>
           </h1>
 
           <p className="text-gray-600">{careers.role}</p>
