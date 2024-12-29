@@ -7,7 +7,7 @@ export async function signInWithGithub() {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'github',
     options: {
-      redirectTo: `http://localhost:3000/api/auth/callback`,
+      redirectTo: `https://mentory-seven.vercel.app/api/auth/callback`,
     },
   });
 
