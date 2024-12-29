@@ -57,13 +57,10 @@ const Header = () => {
 
   const handleLogin = () => {
     open('login');
-    queryClient.invalidateQueries({ queryKey: ['userProfile'] });
   };
 
   const handleSignup = () => {
     open('signup');
-
-    queryClient.invalidateQueries({ queryKey: ['userProfile'] });
   };
 
   const userImage = Array.isArray(profileImage) && profileImage.length > 0 ? profileImage[0] : null;
@@ -85,7 +82,7 @@ const Header = () => {
           ) : isLoggedIn ? (
             <Link href="/mypage">
               <Image
-                src={userImage.profile_image || '/images/profile.png'}
+                src={userImage?.profile_image || '/images/profile.png'}
                 width={40}
                 height={40}
                 alt="profile_image"

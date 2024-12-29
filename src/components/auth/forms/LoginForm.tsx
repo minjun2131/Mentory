@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { createClient } from '@/utils/supabase/client';
 import { useModalStore } from '@/store/modalStore';
 import Swal from 'sweetalert2';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface LoginInput {
   email: string;
@@ -13,6 +14,7 @@ interface LoginInput {
 }
 
 const LoginForm: React.FC = () => {
+  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
@@ -25,13 +27,14 @@ const LoginForm: React.FC = () => {
     try {
       const { error } = await supabase.auth.signInWithPassword(data);
       if (error) throw new Error(error.message);
+      queryClient.invalidateQueries({ queryKey: ['users'] });
       close();
     } catch (error) {
       if (error instanceof Error) {
         Swal.fire({
           icon: 'error',
           title: '로그인 중 오류가 발생했습니다.',
-          text: '잠시 후 다시 시도해 주세요.',
+          text: '잠시 후 다시 시도해 주세요.'
         });
       }
     }
