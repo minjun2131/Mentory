@@ -1,8 +1,11 @@
 'use client';
 
 import ChatModal from '@/components/chat/ChatModal';
+import { useMentorCareers } from '@/hooks/useMentorCareers';
+import { useMentorInfo } from '@/hooks/useMentorInfo';
 import useModalStore from '@/store/chatModalStore';
 import { createClient } from '@/utils/supabase/client';
+import Image from 'next/image';
 import { useParams } from 'next/navigation';
 
 const MentorDetail = () => {
@@ -56,17 +59,41 @@ const MentorDetail = () => {
     }
   };
 
+  const { data: mentorInfo, isPending, isError } = useMentorInfo();
+  const { data: mentorCareer, isPending: isCareerPending } = useMentorCareers();
+
+  if (isPending || isCareerPending) {
+    return <div>로딩 중...</div>;
+  }
+
+  if (isError) {
+    return <div>프로필을 가져오는 데 실패했습니다.</div>;
+  }
+
+  if (!mentorInfo) {
+    return <div>프로필 데이터가 존재하지 않습니다.</div>;
+  }
+  console.log(mentorInfo);
+  const careers = Array.isArray(mentorCareer) && mentorCareer.length > 0 ? mentorCareer[0] : null;
+  console.log(careers);
   return (
     <div className="max-w-4xl mx-auto p-8 pt-[100px] pb-[100px]">
       {/* Header Section */}
       <div className="flex items-center space-x-6">
-        <div className="w-32 h-32 bg-gray-300 rounded-full"></div>
+        <Image
+          src={mentorInfo.profile_image || '/default-image.jpg'}
+          alt="Mentor_Image"
+          width={96}
+          height={96}
+          className="object-cover w-40 h-40 rounded-full"
+        />
+
         <div className="w-1/2">
           <h1 className="text-2xl font-bold">
             문다슬 <span>Mentor</span>
           </h1>
 
-          <p className="text-gray-600">FrontEnd 엔지니어</p>
+          <p className="text-gray-600">{careers.role}</p>
           <button
             onClick={handleCreateChatroom}
             className="ml-auto px-6 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600"
@@ -79,20 +106,16 @@ const MentorDetail = () => {
       {/* About Me Section */}
       <div className="mt-8">
         <h2 className="text-xl font-semibold mb-2">About Me</h2>
-        <p className="text-gray-700">안녕하세요 저는 프론트엔드 엔지니어 문다슬입니다</p>
+        <p className="text-gray-700">{careers.duty}</p>
       </div>
 
       {/* Experience Section */}
       <div className="mt-8">
         <h2 className="text-xl font-semibold mb-2">Experience</h2>
         <ul className="space-y-2">
-          {Array(5)
-            .fill('2024.10.01 ~ 2025.02.28')
-            .map((item, index) => (
-              <li key={index} className="text-gray-700">
-                {item}
-              </li>
-            ))}
+          <li className="text-gray-700">
+            {careers.company_name} : {careers.duration_start} ~ {careers.duration_end}
+          </li>
         </ul>
       </div>
 
