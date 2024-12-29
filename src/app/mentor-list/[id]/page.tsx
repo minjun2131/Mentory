@@ -3,7 +3,9 @@
 import ChatModal from '@/components/chat/ChatModal';
 import { useMentorCareers } from '@/hooks/useMentorCareers';
 import { useMentorInfo } from '@/hooks/useMentorInfo';
-import useModalStore from '@/store/chatModalStore';
+import { getAuthenticatedUser } from '@/lib/profile';
+import useChatModalStore from '@/store/chatModalStore';
+import { useModalStore } from '@/store/modalStore';
 import { createClient } from '@/utils/supabase/client';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
@@ -11,10 +13,34 @@ import { useParams } from 'next/navigation';
 const MentorDetail = () => {
   const supabase = createClient();
   const params = useParams();
-  const { openModal } = useModalStore();
+  const { openModal } = useChatModalStore();
+  const { open } = useModalStore(); 
+
+  const checkAuthentication = async () => {
+    try {
+      const user = await getAuthenticatedUser();
+
+      if (!user) {
+        open('login');
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error('로그인 오류:',error);
+      open('login');
+      return false;
+    }
+  }
 
   const handleCreateChatroom = async () => {
     try {
+      const isAuthenticated = await checkAuthentication();
+
+      if (!isAuthenticated) {
+        return ; // 로그인되지 않았으면 진행하지 않고 return
+      }
+
       // 로그인한 유저의 세션 정보 가져오기
       const {
         data: { session },

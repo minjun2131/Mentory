@@ -9,11 +9,10 @@ export const getAuthenticatedUser = async () => {
     error
   } = await supabase.auth.getUser();
   if (error || !user) {
-    throw new Error(`유저 인증 실패: ${error!.message}`);
+    throw new Error(`유저 인증 실패: ${error?.message}`);
   }
   return user;
 };
-
 
 export const getUserProfile = async () => {
   try {

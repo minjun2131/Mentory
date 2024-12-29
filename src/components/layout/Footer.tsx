@@ -1,7 +1,13 @@
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import { getAuthenticatedUser } from '@/lib/profile';
 import Image from 'next/image';
 import Link from 'next/link';
 
+
 const Footer = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const teamMembers = [
     { name: 'Ho Jun', github: 'https://github.com/minjun2131' },
     { name: 'Sang Gi', github: 'https://github.com/adorable-otter' },
@@ -9,6 +15,20 @@ const Footer = () => {
     { name: 'Da Seul', github: 'https://github.com/Raina-Moon' },
     { name: 'Hye Jin', github: 'https://github.com/choihyejin94' }
   ];
+
+  useEffect(() => {
+    const fetchAuthenticatedUser = async () => {
+      try {
+        await getAuthenticatedUser();
+        setIsAuthenticated(true);
+      } catch (error) {
+        console.error('Error fetching authenticated user:', error);
+        setIsAuthenticated(false);
+      }
+    };
+
+    fetchAuthenticatedUser();
+  }, []);
 
   return (
     <footer className="bg-white py-8 border-t">
@@ -52,26 +72,23 @@ const Footer = () => {
 
           {/* Menu */}
           <div className="flex space-x-16">
-            <div>
-              <h4 className="font-semibold mb-4">Menu</h4>
-              <ul className="space-y-2">
-                <li>
-                  <Link href="/mentors" className="text-gray-600 hover:text-black">
-                    Mentors
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/mypage" className="text-gray-600 hover:text-black">
-                    My Page
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/mentor-request" className="text-gray-600 hover:text-black">
-                    Mentor Request
-                  </Link>
-                </li>
-              </ul>
-            </div>
+            {isAuthenticated ? (
+              <div>
+                <h4 className="font-semibold mb-4">Menu</h4>
+                <ul className="space-y-2">
+                  <li>
+                    <Link href="/mentor-list" className="text-gray-600 hover:text-black">
+                      Mentors
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/mypage" className="text-gray-600 hover:text-black">
+                      My Page
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            ) : null}
 
             <div>
               <h4 className="font-semibold mb-4">Contributors</h4>
